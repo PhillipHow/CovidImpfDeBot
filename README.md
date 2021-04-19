@@ -24,7 +24,7 @@ Be sure to have Maven (I used 3.5.0) and Java 8 installed.
 
 ## Contributing
 
-Please star this repository if the daily updates helped you through the last weeks of lockdown (like they did for me). Feel free to open pull requests in German or English if you notice bugs or typos! :) You can also send in pull requests with new features, but keep in mind that the bot should stay rather simple and lightweight. 
+Please star this repository if the daily updates helped you through the last weeks of lockdown (like they did for me). Feel free to open pull requests in german or english if you notice bugs or typos! :) Pull requests with new features are also welcome, but keep in mind that the bot should stay rather lightwight and simple. 
 
 ## Thanks
 
