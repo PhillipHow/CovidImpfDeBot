@@ -65,7 +65,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.philliphow.covidimpfde.core.Boot</mainClass>
+							<mainClass>de.philliphow.covidimpfde.core.Starter</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
