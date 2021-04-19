@@ -6,10 +6,10 @@ import java.util.stream.Stream;
 
 /**
  * A representation of the vaccination data for one day. Contains new
- * vaccination on that day, the total vaccination, vaccination by vaccine, first
+ * vaccinations on that day, the total vaccinations, vaccinations by vaccine, first
  * and full dose statistics and the vaccinated population quota. Note that
  * additional data for the indication (the vaccination "reason") is also
- * provided by the api, but not used currently.
+ * provided by the API, but not used currently.
  * 
  * @author PhillipHow
  *

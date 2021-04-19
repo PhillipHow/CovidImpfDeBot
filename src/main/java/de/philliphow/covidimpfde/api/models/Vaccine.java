@@ -14,7 +14,7 @@ import de.philliphow.covidimpfde.strings.StrUtil;
  * campaign. Provides a static factory method which returns all known vaccines
  * used so far. Might need to be extended in the future to exclude extra
  * vaccines. Until then, new vaccine fields in the source data do not break the
- * code, but are ignored.
+ * code, but might be ignored if only vaccines from {@code getAll()} are used.
  * 
  * @author PhillipHow
  *

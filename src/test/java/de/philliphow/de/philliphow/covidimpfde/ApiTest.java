@@ -17,11 +17,11 @@ public class ApiTest {
 	@Test
 	public void deliveryApiResultCanBeBuildToMessage() throws IOException {
 
-		DeliveryApiManager.getInstance(true).getNewDataIfNecessary();
-		assertFalse(DeliveryApiManager.getInstance(true).getCurrentData().isEmpty());
+		DeliveryApiManager.getInstance(false).getNewDataIfNecessary();
+		assertFalse(DeliveryApiManager.getInstance(false).getCurrentData().isEmpty());
 		assertDoesNotThrow(() -> {
 			new DeliveryUpdateBuilder().setChatId("aChatId")
-					.setContentData(DeliveryApiManager.getInstance(true).getCurrentData()).build();
+					.setContentData(DeliveryApiManager.getInstance(false).getCurrentData()).build();
 		});
 
 	}
@@ -29,11 +29,11 @@ public class ApiTest {
 	@Test
 	public void vaccinationApiResultCanBeBuildToMessage() throws IOException {
 
-		VaccinationsApiManager.getInstance(true).getNewDataIfNecessary();
-		assertFalse(VaccinationsApiManager.getInstance(true).getCurrentData().isEmpty());
+		VaccinationsApiManager.getInstance(false).getNewDataIfNecessary();
+		assertFalse(VaccinationsApiManager.getInstance(false).getCurrentData().isEmpty());
 		assertDoesNotThrow(() -> {
 			new VaccinationUpdateBuilder().setChatId("aChatId")
-					.setContentData(VaccinationsApiManager.getInstance(true).getCurrentData()).build();
+					.setContentData(VaccinationsApiManager.getInstance(false).getCurrentData()).build();
 		});
 	}
 

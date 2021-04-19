@@ -1,4 +1,4 @@
-package de.philliphow.covidimpfde.util;
+package de.philliphow.covidimpfde.services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import org.pmw.tinylog.Logger;
  * @author PhillipHow
  *
  */
-public class UrlStringRessource {
+public class UrlStringRessourceResolver {
 
 	/**
 	 * The resource URL
@@ -28,7 +28,7 @@ public class UrlStringRessource {
 	 * @param dataSourceUrl the URL of the resource. Can be a web resource or a
 	 *                      local file
 	 */
-	public UrlStringRessource(URL dataSourceUrl) {
+	public UrlStringRessourceResolver(URL dataSourceUrl) {
 		this.url = dataSourceUrl;
 	}
 

@@ -23,19 +23,24 @@ import de.philliphow.covidimpfde.exceptions.SubPersistenceException;
 import de.philliphow.covidimpfde.logic.DeliveryUpdateBuilder;
 import de.philliphow.covidimpfde.logic.UpdateMessageBuilder;
 import de.philliphow.covidimpfde.logic.VaccinationUpdateBuilder;
+import de.philliphow.covidimpfde.services.SubListPersistence;
 import de.philliphow.covidimpfde.telegram.commands.DeliveryCommand;
 import de.philliphow.covidimpfde.telegram.commands.StartCommand;
 import de.philliphow.covidimpfde.telegram.commands.SubscribeCommand;
 import de.philliphow.covidimpfde.telegram.commands.UnsubscribeCommand;
 import de.philliphow.covidimpfde.telegram.commands.VaccinationCommand;
-import de.philliphow.covidimpfde.util.SubListPersistence;
 
 /**
  * The Telegram bot instance and main entry point of the application. Its job is
- * it to answer command queries and to check for new vaccination and delivery
- * data in regular intervals. Can be started in normal and debug mode. In debug
+ * to answer command queries and to check for new vaccination and delivery
+ * data in regular intervals. 
+ * 
+ * Can be started in normal and debug mode. In debug
  * mode, the interval to check for new data is much shorter, and data is
- * acquired from two local mock files instead of the real impfdashboard.de
+ * acquired from two local mock files instead of the real impfdashboard.de.
+ * If running from executable jar, the data needs to be put in a folder next
+ * to the jar. See {@link DeliveryApiManager} and {@link VaccinationsApiManager}
+ * for paths.
  * 
  * @author PhillipHow
  *
@@ -229,16 +234,16 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 	 * 
 	 * @param updateBuilder builder for the message. ChatId will be set by this
 	 *                      method, so don't worry about that.
+	 * @param <T> the type of data rows that is used for constructing the update
 	 * @throws SubPersistenceException if the subscription file can not be read
 	 */
 	private <T> void sendUpdateToAllSubs(UpdateMessageBuilder<T> updateBuilder) throws SubPersistenceException {
 
 		List<String> subbedChatIds = new SubListPersistence().getAllSubs();
-		SendBulkMessage bulkMessageSender = new SendBulkMessage(subbedChatIds,
+		BulkMessageSender bulkMessageSender = new BulkMessageSender(subbedChatIds,
 				(chatId) -> updateBuilder.setChatId(chatId).build(), this);
 
-		bulkMessageSender.sendAll((success, fail) -> notifyAdminOnTelegram(updateBuilder.getClass()
-				+ "-Update versendet, " + success.size() + " erfolgreich, " + fail.size() + " nicht erreichbar"));
+		bulkMessageSender.sendAllAsync((success, fail) -> notifyAdminOnTelegram("Update versendet! " + success.size() + " erfolgreich, " + fail.size() + " nicht erreichbar"));
 	}
 
 	@Override

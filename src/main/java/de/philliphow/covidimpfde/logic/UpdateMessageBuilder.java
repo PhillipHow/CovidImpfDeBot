@@ -9,11 +9,12 @@ import org.pmw.tinylog.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 /**
- * Abstract Builder to generate a {@link SendMessage} update for a list of data
+ * Abstract Builder to generate a {@link SendMessage} telegram update for a list of data
  * entries of type {@code T}.
  * 
  * @author PhillipHow
- * @see DeliveryUpdateBuilder, {@link VaccinationUpdateBuilder}
+ * @see {@link DeliveryUpdateBuilder}  
+ * @see {@link VaccinationUpdateBuilder}
  * @param <T> the data type of the data rows used as source material for the
  *        update
  */

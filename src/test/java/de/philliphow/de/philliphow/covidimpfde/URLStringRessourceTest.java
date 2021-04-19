@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.philliphow.covidimpfde.util.UrlStringRessource;
+import de.philliphow.covidimpfde.services.UrlStringRessourceResolver;
 
 public class URLStringRessourceTest {
 
@@ -24,7 +24,7 @@ public class URLStringRessourceTest {
 	private static final String TEST_ONLINE_RESOURCE_NOT_EXISTS = "https://zerjklaerlkajdakjle.com";
 	private static final String TEST_FILE_CONTENT = "test string";
 
-	UrlStringRessource example;
+	UrlStringRessourceResolver example;
 
 	@BeforeEach
 	public void setUp() throws IOException {
@@ -45,7 +45,7 @@ public class URLStringRessourceTest {
 	public void testLocalFileRead() throws IOException {
 		URL url = new URL(new URL("file:"), TEST_LOCAL_FILE);
 
-		example = new UrlStringRessource(url);
+		example = new UrlStringRessourceResolver(url);
 
 		// trim, as URLStringRessource will add a \n at the end
 		assertEquals(TEST_FILE_CONTENT, example.getAsStringSync());
@@ -55,7 +55,7 @@ public class URLStringRessourceTest {
 	public void testOnlineFileRead() throws IOException {
 
 		URL url = new URL(TEST_ONLINE_RESOURCE);
-		example = new UrlStringRessource(url);
+		example = new UrlStringRessourceResolver(url);
 
 		String result = example.getAsStringSync();
 
@@ -66,7 +66,7 @@ public class URLStringRessourceTest {
 	@Test
 	public void testFileNotExistsThrowsException() throws MalformedURLException {
 
-		example = new UrlStringRessource(new URL(new URL("file:"), TEST_LOCAL_FILE_NOT_EXISTS));
+		example = new UrlStringRessourceResolver(new URL(new URL("file:"), TEST_LOCAL_FILE_NOT_EXISTS));
 
 		Assertions.assertThrows(IOException.class, () -> {
 			example.getAsStringSync();
@@ -77,7 +77,7 @@ public class URLStringRessourceTest {
 	@Test
 	public void testOnlineRessourceNotExistThrowsException() throws MalformedURLException {
 
-		example = new UrlStringRessource(new URL(new URL("file:"), TEST_ONLINE_RESOURCE_NOT_EXISTS));
+		example = new UrlStringRessourceResolver(new URL(new URL("file:"), TEST_ONLINE_RESOURCE_NOT_EXISTS));
 
 		Assertions.assertThrows(IOException.class, () -> {
 			example.getAsStringSync();

@@ -9,7 +9,7 @@ import java.util.Scanner;
 import org.pmw.tinylog.Logger;
 
 import de.philliphow.covidimpfde.api.models.AbstractTsvRow;
-import de.philliphow.covidimpfde.util.UrlStringRessource;
+import de.philliphow.covidimpfde.services.UrlStringRessourceResolver;
 
 /***
  * Abstracts a tsv (tab separated values) file provided by a web API. Gets tsv
@@ -69,7 +69,7 @@ public abstract class AbstractTsvApiWithCache<T extends AbstractTsvRow> {
 	 * @throws IOException if the data source could not be reached
 	 */
 	private List<T> getFreshData() throws IOException {
-		String tsvFile = new UrlStringRessource(this.dataSourceUrl).getAsStringSync();
+		String tsvFile = new UrlStringRessourceResolver(this.dataSourceUrl).getAsStringSync();
 		List<T> tsvDataRows = new ArrayList<>();
 
 		Scanner dataRowScanner = new Scanner(tsvFile);

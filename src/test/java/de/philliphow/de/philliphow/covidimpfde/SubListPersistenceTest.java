@@ -16,7 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.philliphow.covidimpfde.exceptions.SubPersistenceException;
-import de.philliphow.covidimpfde.util.SubListPersistence;
+import de.philliphow.covidimpfde.services.SubListPersistence;
 
 public class SubListPersistenceTest {
 

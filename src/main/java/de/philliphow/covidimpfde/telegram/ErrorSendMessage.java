@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 /**
  * Class that provides a few error messages via static factory functions. The
  * returned objects are ready to be send via the {@link TelegramLongPollingBot}
- * {@code execute(SendMessage)} api.
+ * {@code execute(SendMessage)} API.
  * 
  * @author PhillipHow
  *

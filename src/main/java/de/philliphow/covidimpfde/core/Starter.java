@@ -10,6 +10,7 @@ import de.philliphow.covidimpfde.telegram.CovidImpfDeBot;
 
 /**
  * Reads in the console arguments and starts the Bot
+ * See README for instructions on how to start bot from console.
  * 
  * @author PhillipHow
  *

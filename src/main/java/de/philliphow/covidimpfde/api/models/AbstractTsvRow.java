@@ -21,7 +21,8 @@ public class AbstractTsvRow {
 	/***
 	 * Constructs an AbstractTsvRow by parsing a raw tsv data row in combination
 	 * with the raw file header row (first row which contains the identifiers for
-	 * the data row values)
+	 * the data row values). Both strings need to have an equal number of individual
+	 * tokens.
 	 * 
 	 * @param rowAsString A tsv row of data records
 	 * @param headerRow   A tsv row of header values

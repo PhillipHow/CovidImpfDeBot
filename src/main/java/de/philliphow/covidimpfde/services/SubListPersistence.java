@@ -1,4 +1,4 @@
-package de.philliphow.covidimpfde.util;
+package de.philliphow.covidimpfde.services;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -9,10 +9,11 @@ import de.philliphow.covidimpfde.exceptions.ImpfDashboardApiException;
 
 /***
  * Class for querying and caching daily vaccination data in Germany. Access via
- * singleton pattern. Provides two singleton instances, a production instance
- * for querying the actual data and a debug instance that only queries a local
- * file in the project root directory for testing purposes. See class constants
- * for data source URLs.
+ * singleton pattern. 
+ * 
+ * Provides two singleton instances, a production instance
+ * for querying the actual online data and a debug instance that only queries a local
+ * file for testing purposes. See class constants for online and local data source URLs.
  * 
  * @author PhillipHow
  *
@@ -29,7 +30,7 @@ public class VaccinationsApiManager extends AbstractTsvApiWithCache<VaccinationD
 	public static VaccinationsApiManager debugInstance = null;
 
 	private static final String RESSOURCE_URL = "https://impfdashboard.de/static/data/germany_vaccinations_timeseries_v2.tsv";
-	private static final String DEBUG_LOCAL_RESSOURCE_URL = "debug-data/debug_vaccination_timeseries.tsv";
+	private static final String DEBUG_LOCAL_RESSOURCE_URL = "test-datasets/debug_vaccination_timeseries.tsv";
 
 	private VaccinationsApiManager(boolean debugMode) {
 		super(getRessourceUrl(debugMode));

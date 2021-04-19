@@ -11,10 +11,10 @@ import de.philliphow.covidimpfde.api.models.VaccinationDataRow;
 import de.philliphow.covidimpfde.exceptions.SubPersistenceException;
 import de.philliphow.covidimpfde.logic.UpdateMessageBuilder;
 import de.philliphow.covidimpfde.logic.VaccinationUpdateBuilder;
+import de.philliphow.covidimpfde.services.SubListPersistence;
 import de.philliphow.covidimpfde.strings.messagegenerators.VaccinationUpdateString;
 import de.philliphow.covidimpfde.telegram.CovidImpfDeBot;
 import de.philliphow.covidimpfde.telegram.TelegramCommandWrapper;
-import de.philliphow.covidimpfde.util.SubListPersistence;
 
 /**
  * Implements the logic for the {@code /impf} command. Answers with a

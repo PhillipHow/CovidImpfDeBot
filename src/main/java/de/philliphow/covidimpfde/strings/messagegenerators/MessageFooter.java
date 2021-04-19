@@ -3,7 +3,7 @@ package de.philliphow.covidimpfde.strings.messagegenerators;
 public class MessageFooter implements MessageStringGenerator {
 
 	private static final String DATA_SOURCE = "https://impfdashboard.de/";
-	private static final String GITHUB_LINK = "https://stackoverflow.com/questions/50770235/how-to-use-markdown-in-telegram-i-want-to-send-message-with-hyperlink";
+	private static final String GITHUB_LINK = "https://github.com/PhillipHow/CovidImpfDeBot";
 
 	private final boolean isSubbed;
 

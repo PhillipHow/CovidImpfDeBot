@@ -9,11 +9,11 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
- * Wrapper to simplify and abstract from the {@link BotCommand} api. The
- * {@code execute(AbsSender, User, Chat, String[])} api is replaced by
+ * Wrapper to simplify and abstract from the {@link BotCommand} API. The
+ * {@code execute(AbsSender, User, Chat, String[])} API is replaced by
  * getAnswerForQuery(String, String[]), which just needs clients to provide the
- * answer to the query as {@link SendMessage} object. This class takes charge of
- * sending the message and doing error handling.
+ * answer to the query as {@link SendMessage} object. Clients do not need to 
+ * worry about the sending logic. This class also contains a global error handler.
  * 
  * @author PhillipHow
  *
