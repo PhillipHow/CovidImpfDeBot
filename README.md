@@ -2,7 +2,7 @@
 
 A telegram bot that informs about the current progress in the German COVID-19 vaccination campaign. Includes a (scientifically not very accurate) daily estimation when herd immunity will be reached. Users can subscribe to get notified about vaccination and delivery updates. 
 
-Written in Java 8 with a strong focus on DRY and the SRP. Published under MIT license. Data source is the Impfdashboard of the german [Robert Koch institute](https://impfdashboard.de/).
+Written in Java 8 with a strong focus on DRY and the SRP. Published under the MIT license. Vaccination data is fetched from the [Impfdashboard of the german Robert Koch institute](https://impfdashboard.de/).
 
 ## For end users
 
