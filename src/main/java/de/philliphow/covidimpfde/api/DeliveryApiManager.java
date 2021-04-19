@@ -34,7 +34,7 @@ public class DeliveryApiManager extends AbstractTsvApiWithCache<DeliveryDataRow>
 	private static DeliveryApiManager debugInstance = null;
 
 	public static final String RESSOURCE_URL = "https://impfdashboard.de/static/data/germany_deliveries_timeseries_v2.tsv";
-	public static final String DEBUG_LOCAL_RESSOURCE_URL = "./debug_delivery_timeseries.tsv";
+	public static final String DEBUG_LOCAL_RESSOURCE_URL = "debug-data/debug_delivery_timeseries.tsv";
 
 	private DeliveryApiManager(boolean debugMode) {
 		super(getRessourceUrl(debugMode));
