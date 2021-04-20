@@ -40,7 +40,7 @@ public class BulkMessageSender {
 	/**
 	 * Constructs a BulkMessageSender.
 	 * @param chatIds the recipients of the bulk message
-	 * @param getMessageForChatId a function that generates the {@link SendMessage} for a userId
+	 * @param getMessageForChatId a function that generates the {@link SendMessage} for a chatId
 	 * @param sender the bot to send the message with
 	 */
 	public BulkMessageSender(List<String> chatIds, Function<String, SendMessage> getMessageForChatId, AbsSender sender) {

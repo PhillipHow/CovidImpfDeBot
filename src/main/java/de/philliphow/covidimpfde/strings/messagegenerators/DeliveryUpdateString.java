@@ -24,7 +24,7 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 	 */
 	private final DeliveryDataInterpretation data;
 	/**
-	 * true if the user getting the update has subscribed to daily Updates
+	 * true if the chat getting the update is subscribed to daily updates
 	 */
 	private final boolean isSubbed;
 

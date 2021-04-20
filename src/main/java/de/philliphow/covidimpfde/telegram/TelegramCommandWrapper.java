@@ -37,11 +37,11 @@ public abstract class TelegramCommandWrapper extends BotCommand {
 	/**
 	 * Hook method to define the business logic for this command.
 	 * 
-	 * @param userId Telegram userId of the user that issued the command
+	 * @param chatId Telegram chatId of the chat in which the command was issued
 	 * @param args   the command arguments
 	 * @return an answer to the command query
 	 */
-	public abstract SendMessage getAnswerForQuery(String userId, String[] args);
+	public abstract SendMessage getAnswerForQuery(String chatId, String[] args);
 
 	/**
 	 * Satisfies the {@code execute()} interface of {@link BotCommand}. Also defines
@@ -53,7 +53,7 @@ public abstract class TelegramCommandWrapper extends BotCommand {
 
 		SendMessage answer;
 		try {
-			answer = getAnswerForQuery(user.getId().toString(), args);
+			answer = getAnswerForQuery(chat.getId().toString(), args);
 		} catch (Exception exception) {
 			// emergency handler to avoid giving no feedback to user
 			Logger.error(exception, "error while getting command answer for {}", this.getCommandIdentifier());

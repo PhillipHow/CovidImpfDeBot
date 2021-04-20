@@ -26,8 +26,8 @@ public class SubListPersistence {
 	/**
 	 * Subscribes the user with the given id
 	 * 
-	 * @param chatId the telegram userId
-	 * @return true, if the user has not been subscribed before this method was
+	 * @param chatId the telegram chatId
+	 * @return true, if the chat has not been subscribed before this method was
 	 *         called, false otherwise
 	 * @throws SubPersistenceException if the subscription file could not be written
 	 */
@@ -49,10 +49,10 @@ public class SubListPersistence {
 	}
 
 	/**
-	 * Unsubscribes the user with the given id
+	 * Unsubscribes the telegram chat with the given id
 	 * 
-	 * @param chatId the telegram userId
-	 * @return true, if the user has been subscribed before this method was called,
+	 * @param chatId the telegram chatId
+	 * @return true, if the chat has been subscribed before this method was called,
 	 *         false otherwise
 	 * @throws SubPersistenceException if the subscription file could not be written
 	 */
@@ -74,10 +74,10 @@ public class SubListPersistence {
 	}
 
 	/**
-	 * Checks if the given user is subscribed
+	 * Checks if the given chat is subscribed
 	 * 
-	 * @param chatId the telegram userId
-	 * @return true if the user is subscribed, false if not
+	 * @param chatId the telegram chatId
+	 * @return true if the chat is subscribed, false if not
 	 * @throws SubPersistenceException if the sub file could not be read
 	 */
 	public boolean isSubbed(String chatId) throws SubPersistenceException {
@@ -89,9 +89,9 @@ public class SubListPersistence {
 	}
 
 	/**
-	 * Returns the userIds for all users currently subscribed
+	 * Returns the chatId for all chats currently subscribed
 	 * 
-	 * @return list of userIds
+	 * @return list of chatsIds
 	 * @throws SubPersistenceException if the list could not be read
 	 */
 	public List<String> getAllSubs() throws SubPersistenceException {

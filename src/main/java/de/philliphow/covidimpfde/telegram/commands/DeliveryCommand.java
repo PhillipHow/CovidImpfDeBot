@@ -30,20 +30,20 @@ public class DeliveryCommand extends TelegramCommandWrapper {
 	}
 
 	@Override
-	public SendMessage getAnswerForQuery(String userId, String[] args) {
+	public SendMessage getAnswerForQuery(String chatId, String[] args) {
 
 		List<DeliveryDataRow> deliveries = DeliveryApiManager.getInstance(getBot().getDebugMode()).getCurrentData();
-		boolean userIsSubbed = getUserIsSubbed(userId);
+		boolean chatIsSubbed = getChatIsSubbed(chatId);
 
-		UpdateMessageBuilder<DeliveryDataRow> deliveryUpdateBuilder = new DeliveryUpdateBuilder().setChatId(userId)
-				.setContentData(deliveries).setIsSubbed(userIsSubbed);
+		UpdateMessageBuilder<DeliveryDataRow> deliveryUpdateBuilder = new DeliveryUpdateBuilder().setChatId(chatId)
+				.setContentData(deliveries).setIsSubbed(chatIsSubbed);
 
 		return deliveryUpdateBuilder.build();
 	}
 
-	private boolean getUserIsSubbed(String userId) {
+	private boolean getChatIsSubbed(String chatId) {
 		try {
-			return new SubListPersistence().isSubbed(userId);
+			return new SubListPersistence().isSubbed(chatId);
 		} catch (SubPersistenceException subPersistenceException) {
 			// recover and log to deliver message nonetheless
 			this.getBot().notifyAdminOnTelegram("WARNING: SubPersistence threw IOException!");

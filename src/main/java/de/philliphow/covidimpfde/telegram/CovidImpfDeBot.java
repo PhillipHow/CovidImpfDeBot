@@ -176,7 +176,7 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 
 	/**
 	 * After this method is called, the bot periodically calls the given vaccination
-	 * and delivery files and notifies all subscribed users with updates when new
+	 * and delivery files and notifies all subscribed chats with updates when new
 	 * data is found in either of them.
 	 */
 	private void startImpfDashboardPolling() {
@@ -229,7 +229,7 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 	}
 
 	/**
-	 * Sends a provided update to all users whose chatId is in the subscriptions
+	 * Sends a provided update to all chats whose chatId is in the subscriptions
 	 * file.
 	 * 
 	 * @param updateBuilder builder for the message. ChatId will be set by this

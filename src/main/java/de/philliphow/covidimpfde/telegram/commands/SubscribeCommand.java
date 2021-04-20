@@ -12,7 +12,7 @@ import de.philliphow.covidimpfde.telegram.ErrorSendMessage;
 import de.philliphow.covidimpfde.telegram.TelegramCommandWrapper;
 
 /**
- * Implements the logic of the {@code /sub} command. Tries to subscribe the user
+ * Implements the logic of the {@code /sub} command. Tries to subscribe the chat
  * and gives feedback.
  * 
  * @author PhillipHow
@@ -25,17 +25,17 @@ public class SubscribeCommand extends TelegramCommandWrapper {
 	}
 
 	@Override
-	public SendMessage getAnswerForQuery(String userId, String[] args) {
+	public SendMessage getAnswerForQuery(String chatId, String[] args) {
 
 		try {
 
 			SendMessage answerMessage = new SendMessage();
-			answerMessage.setChatId(userId);
+			answerMessage.setChatId(chatId);
 
 			MessageStringGenerator answerString;
-			if (new SubListPersistence().subscribe(userId)) {
+			if (new SubListPersistence().subscribe(chatId)) {
 				answerString = SubscriptionAnswerString.subscriptionSucessfull();
-				Logger.info("A user subscribed");
+				Logger.info("A chat subscribed");
 			} else {
 				answerString = SubscriptionAnswerString.alreadySubscribed();
 			}
@@ -46,7 +46,7 @@ public class SubscribeCommand extends TelegramCommandWrapper {
 		} catch (SubPersistenceException subPersistenceException) {
 			this.getBot().notifyAdminOnTelegram("SubPesistence threw exception on user sub!");
 			Logger.error(subPersistenceException);
-			return ErrorSendMessage.couldNotSubscribe(userId);
+			return ErrorSendMessage.couldNotSubscribe(chatId);
 		}
 
 	}

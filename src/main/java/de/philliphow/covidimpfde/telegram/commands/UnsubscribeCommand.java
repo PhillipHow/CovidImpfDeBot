@@ -13,7 +13,7 @@ import de.philliphow.covidimpfde.telegram.TelegramCommandWrapper;
 
 /**
  * Implements the logic of the {@code /unsub} command. Tries to unsubscribe the
- * user and gives feedback.
+ * chat and gives feedback.
  * 
  * @author PhillipHow
  *
@@ -25,14 +25,14 @@ public class UnsubscribeCommand extends TelegramCommandWrapper {
 	}
 
 	@Override
-	public SendMessage getAnswerForQuery(String userId, String[] args) {
+	public SendMessage getAnswerForQuery(String chatId, String[] args) {
 
 		try {
 			SendMessage answerMessage = new SendMessage();
-			answerMessage.setChatId(userId);
+			answerMessage.setChatId(chatId);
 
 			MessageStringGenerator answerString;
-			if (new SubListPersistence().unsubscribe(userId)) {
+			if (new SubListPersistence().unsubscribe(chatId)) {
 				answerString = SubscriptionAnswerString.unsubscribeSucessfull();
 				Logger.info("A user unsubscribed");
 			} else {
@@ -45,7 +45,7 @@ public class UnsubscribeCommand extends TelegramCommandWrapper {
 		} catch (SubPersistenceException subPersistenceException) {
 			this.getBot().notifyAdminOnTelegram("SubPesistence threw exception on user unsub!");
 			Logger.error(subPersistenceException);
-			return ErrorSendMessage.couldNotUnsubscribe(userId);
+			return ErrorSendMessage.couldNotUnsubscribe(chatId);
 		}
 
 	}

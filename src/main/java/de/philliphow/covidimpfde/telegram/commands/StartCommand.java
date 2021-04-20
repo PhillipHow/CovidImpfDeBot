@@ -20,8 +20,8 @@ public class StartCommand extends TelegramCommandWrapper {
 	}
 
 	@Override
-	public SendMessage getAnswerForQuery(String userId, String[] args) {
-		return new VaccinationCommand(this.getBot()).getAnswerForQuery(userId, args);
+	public SendMessage getAnswerForQuery(String chatId, String[] args) {
+		return new VaccinationCommand(this.getBot()).getAnswerForQuery(chatId, args);
 	}
 
 }

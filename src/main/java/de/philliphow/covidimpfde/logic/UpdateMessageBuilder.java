@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 public abstract class UpdateMessageBuilder<T> {
 
 	/**
-	 * Telegram chatId of the user receiving the update
+	 * Telegram id of the chat receiving the update
 	 */
 	private String chatId = null;
 	/**
@@ -29,7 +29,7 @@ public abstract class UpdateMessageBuilder<T> {
 	 */
 	private List<T> allDataRows = null;
 	/**
-	 * true if the user has subscribed to daily updates from the Telegram bot.
+	 * true if the chat is subscribed to daily updates from the Telegram bot.
 	 */
 	private boolean isSubbed = true;
 	/**
@@ -42,7 +42,7 @@ public abstract class UpdateMessageBuilder<T> {
 	 * Generates the update String from the source data.
 	 * 
 	 * @param allDataRows the source data
-	 * @param isSubbed    true if the user has subscribed to daily bot updates
+	 * @param isSubbed    true if the chat is subscribed to daily bot updates
 	 * @return a String in markdown format with the update
 	 */
 	public abstract String getMessageText(List<T> allDataRows, boolean isSubbed);

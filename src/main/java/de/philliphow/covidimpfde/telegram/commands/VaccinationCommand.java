@@ -32,23 +32,23 @@ public class VaccinationCommand extends TelegramCommandWrapper {
 	}
 
 	@Override
-	public SendMessage getAnswerForQuery(String userId, String[] args) {
+	public SendMessage getAnswerForQuery(String chatId, String[] args) {
 
 		List<VaccinationDataRow> vaccinationData = VaccinationsApiManager.getInstance(getBot().getDebugMode())
 				.getCurrentData();
-		boolean userIsSubbed = getUserIsSubbed(userId);
+		boolean chatIsSubbed = getChatIsSubbed(chatId);
 
 		UpdateMessageBuilder<VaccinationDataRow> updateBuilder = new VaccinationUpdateBuilder()
-				.setIsSubbed(userIsSubbed).setChatId(userId).setContentData(vaccinationData);
+				.setIsSubbed(chatIsSubbed).setChatId(chatId).setContentData(vaccinationData);
 
 		addDebugDateToBuilderIfGiven(updateBuilder, args);
 
 		return updateBuilder.build();
 	}
 
-	private boolean getUserIsSubbed(String userId) {
+	private boolean getChatIsSubbed(String chatId) {
 		try {
-			return new SubListPersistence().isSubbed(userId);
+			return new SubListPersistence().isSubbed(chatId);
 		} catch (SubPersistenceException subPersistenceException) {
 			// recover and log to deliver message nontheless
 			this.getBot().notifyAdminOnTelegram("WARNING: SubPersistence threw IOException!");

@@ -30,7 +30,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	private final VaccinationDataInterpretation dataInterpreter;
 
 	/**
-	 * If the user requesting this update has subscribed to daily Updates
+	 * If the chat requesting this update has subscribed to daily Updates
 	 */
 	private final boolean isSubbed;
 
