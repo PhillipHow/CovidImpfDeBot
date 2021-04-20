@@ -15,7 +15,7 @@ public class MessageFooter implements MessageStringGenerator {
 	public String getTextAsMarkdown() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(String.format("[Datenquelle](%s) | [Github](%s) | /impf | /letztelieferung\n", DATA_SOURCE,
+		sb.append(String.format("[Datenquelle](%s) | [Github](%s) | /impf | /lieferung\n", DATA_SOURCE,
 				GITHUB_LINK));
 
 		if (!isSubbed) {

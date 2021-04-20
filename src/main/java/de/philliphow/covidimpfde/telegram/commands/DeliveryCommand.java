@@ -15,7 +15,7 @@ import de.philliphow.covidimpfde.telegram.CovidImpfDeBot;
 import de.philliphow.covidimpfde.telegram.TelegramCommandWrapper;
 
 /**
- * Implements the logic for the {@code /letztelieferung} command. Answers with a
+ * Implements the logic for the {@code /lieferung} command. Answers with a
  * delivery update.
  * 
  * @author PhillipHow
@@ -26,7 +26,7 @@ import de.philliphow.covidimpfde.telegram.TelegramCommandWrapper;
 public class DeliveryCommand extends TelegramCommandWrapper {
 
 	public DeliveryCommand(CovidImpfDeBot bot) {
-		super("letztelieferung", "", bot);
+		super("lieferung", "", bot);
 	}
 
 	@Override
