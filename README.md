@@ -2,7 +2,7 @@
 
 A telegram bot that informs about the current progress in the German COVID-19 vaccination campaign. Includes a (scientifically not very accurate) daily estimation when herd immunity will be reached. Users can subscribe to get notified about vaccination and delivery updates. 
 
-Written in Java 8 with a strong focus on DRY and the SRP. Published under MIT license. Data source is the Impfdashboard of the german [Robert Koch institute](https://impfdashboard.de/).
+Written in Java 8 with a strong focus on DRY and the SRP. Published under the MIT license. Vaccination data is fetched from the [Impfdashboard of the german Robert Koch institute](https://impfdashboard.de/).
 
 ## For end users
 
@@ -24,7 +24,7 @@ Be sure to have Maven (I used 3.5.0) and Java 8 installed.
 
 ## Contributing
 
-Please star this repository if the daily updates helped you through the last weeks of lockdown (like they did for me). Feel free to open pull requests in German or English if you notice bugs or typos! :) You can also send in pull requests with new features, but keep in mind that the bot should stay rather simple and lightweight. 
+Please star this repository if the daily updates helped you through the last weeks of lockdown (like they did for me). Feel free to open pull requests in german or english if you notice bugs or typos! :) Pull requests with new features are also welcome, but keep in mind that the bot should stay rather lightwight and simple. 
 
 ## Thanks
 
