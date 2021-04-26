@@ -63,8 +63,10 @@ public class DeliveryApiManager extends AbstractTsvApiWithCache<DeliveryDataRow>
 
 	/***
 	 * Returns the current list of vaccine deliveries in Germany. One line
-	 * represents one delivery of a certain vaccine on a certain day. Note that this
-	 * method does not query the actual data source, but the cache, and hence never
+	 * represents all summed up deliveries of a certain vaccine during a certain week. 
+	 * Date will be the monday of the delivery week.
+	 * 
+	 * Note that this method does not query the actual data source, but the cache, and hence never
 	 * fails to deliver data. If this is called before {@code getNewDataIfNecessary}
 	 * is called, it will always return an empty list.
 	 */
@@ -77,11 +79,11 @@ public class DeliveryApiManager extends AbstractTsvApiWithCache<DeliveryDataRow>
 		 */
 
 		Map<String, List<DeliveryDataRow>> localDeliveriesGroupedByFederalDelivery = super.getCurrentData().stream()
-				.collect(Collectors.groupingBy(e -> e.getDate() + "/" + e.getVaccineIdentifier()));
+				.collect(Collectors.groupingBy(e -> e.getCalendarWeekMonday() + "/" + e.getVaccineIdentifier()));
 
 		List<DeliveryDataRow> federalDeliveries = new ArrayList<>();
 		localDeliveriesGroupedByFederalDelivery.forEach((key, deliveryParts) -> {
-			LocalDate deliveryDate = deliveryParts.get(0).getDate();
+			LocalDate deliveryDate =deliveryParts.get(0).getCalendarWeekMonday();
 			String deliveryVaccine = deliveryParts.get(0).getVaccineIdentifier();
 
 			DeliveryDataRow deliveryPartsAccumulated = new DeliveryDataRow(deliveryDate, deliveryVaccine, "DE", 0);
@@ -91,11 +93,11 @@ public class DeliveryApiManager extends AbstractTsvApiWithCache<DeliveryDataRow>
 			federalDeliveries.add(deliveryPartsAccumulated);
 		});
 
-		federalDeliveries.sort((d1, d2) -> d1.getDate().compareTo(d2.getDate()));
+		federalDeliveries.sort((d1, d2) -> d1.getCalendarWeekMonday().compareTo(d2.getCalendarWeekMonday()));
 
 		return federalDeliveries;
 	}
-
+	
 	@Override
 	public DeliveryDataRow buildOneRowFrom(String tsvRow, String headerRow) {
 		return new DeliveryDataRow(tsvRow, headerRow);

@@ -1,10 +1,12 @@
 package de.philliphow.covidimpfde.logic;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import de.philliphow.covidimpfde.api.models.DeliveryDataRow;
 import de.philliphow.covidimpfde.api.models.VaccinationDataRow;
@@ -42,6 +44,31 @@ public class DeliveryDataInterpretation {
 
 	public int getTotalDeliveredDoses() {
 		return data.stream().mapToInt(delivery -> delivery.getDoses()).sum();
+	}
+	
+	/**
+	 * @return the total number of doses delivered during the last week 
+	 */
+	public int getLastWeekDelivieredDoses() {
+		System.out.println(getLastWeeksDeliveries());
+		return getLastWeeksDeliveries().stream().mapToInt(delivery -> delivery.getDoses()).sum();
+	}
+	
+	/*
+	 * @return the number of suppliers that delivered during the last week
+	 */
+	public int getLastWeekNumberOfSuppliers() {
+		return getLastWeeksDeliveries().stream()
+					.map(delivery -> delivery.getVaccineIdentifier())
+					.collect(Collectors.toSet())
+					.size();
+	}
+	
+	private List<DeliveryDataRow> getLastWeeksDeliveries() {
+		LocalDate lastMonday = latestDelivery.getCalendarWeekMonday();
+		return data.stream()
+					.filter(delivery -> delivery.getCalendarWeekMonday().equals(lastMonday))
+					.collect(Collectors.toList());
 	}
 
 	/**

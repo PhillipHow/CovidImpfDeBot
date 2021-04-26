@@ -18,17 +18,17 @@ import de.philliphow.covidimpfde.api.models.DeliveryDataRow;
 import de.philliphow.covidimpfde.api.models.Vaccine;
 import de.philliphow.covidimpfde.logic.DeliveryDataInterpretation;
 
-public class TestDeliveryDataInterpretation {
+public class DeliveryDataInterpretationTest {
 
 	DeliveryDataInterpretation example;
 	List<DeliveryDataRow> exampleData;
 
 	LocalDate today = LocalDate.now();
-	LocalDate oneWeekAgo = LocalDate.now().minusDays(7);
+	LocalDate oneWeekAgo = LocalDate.now().minusDays(8);
 	LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
 
-	String vaccineModerna = "moderna";
-	String vaccineBiontech = "comirnaty";
+	final String vaccineModerna = "moderna";
+	final String vaccineBiontech = "comirnaty";
 
 	public static final double EPSILON = 0.000000001;
 
@@ -36,15 +36,28 @@ public class TestDeliveryDataInterpretation {
 	public void setUp() {
 
 		exampleData = new ArrayList<>();
-		exampleData.add(new DeliveryDataRow(today, vaccineModerna, "DE-BW", 100));
-		exampleData.add(new DeliveryDataRow(today, vaccineModerna, "DE-BW", 200));
-		exampleData.add(new DeliveryDataRow(oneWeekAgo, vaccineBiontech, "DE-1", 300));
-		exampleData.add(new DeliveryDataRow(oneWeekAgo, vaccineBiontech, "DE-2", 400));
-		exampleData.add(new DeliveryDataRow(oneWeekAgo, vaccineModerna, "DE-3", 500));
 		exampleData.add(new DeliveryDataRow(oneMonthAgo, vaccineBiontech, "DE-BW", 600));
 		exampleData.add(new DeliveryDataRow(oneMonthAgo, vaccineModerna, "DE-BW", 700));
+		
+		exampleData.add(new DeliveryDataRow(oneWeekAgo, vaccineModerna, "DE-BW", 100));
+		exampleData.add(new DeliveryDataRow(oneWeekAgo, vaccineModerna, "DE-BW", 200));
+		
+		exampleData.add(new DeliveryDataRow(today, vaccineBiontech, "DE-1", 300));
+		exampleData.add(new DeliveryDataRow(today, vaccineBiontech, "DE-2", 400));
+		exampleData.add(new DeliveryDataRow(today, vaccineModerna, "DE-3", 500));
+
 
 		example = new DeliveryDataInterpretation(exampleData);
+	}
+	
+	@Test
+	public void getLastWeekDeliveredDosesIsCorrect() {
+		assertEquals(300 + 400 + 500, example.getLastWeekDelivieredDoses());
+	}
+	
+	@Test
+	public void getLastWeekSuppliersIsCorrect() {
+		assertEquals(2, example.getLastWeekNumberOfSuppliers());
 	}
 
 	@Test
@@ -103,7 +116,7 @@ public class TestDeliveryDataInterpretation {
 
 	@Test
 	public void biggestDeliveryCorrect() {
-		assertEquals(exampleData.get(6), example.getBiggestDelivery());
+		assertEquals(exampleData.get(1), example.getBiggestDelivery());
 	}
 
 	@Test

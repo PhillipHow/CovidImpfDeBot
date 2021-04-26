@@ -26,7 +26,7 @@ public class DeliveryUpdateBuilder extends UpdateMessageBuilder<DeliveryDataRow>
 
 	@Override
 	public LocalDate getDateFor(DeliveryDataRow dataRow) {
-		return dataRow.getDate();
+		return dataRow.getCalendarWeekMonday();
 	}
 
 }

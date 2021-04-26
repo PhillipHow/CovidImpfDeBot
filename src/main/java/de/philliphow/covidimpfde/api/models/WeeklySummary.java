@@ -27,7 +27,7 @@ public class WeeklySummary {
 		return weekMonday;
 	}
 
-	public int getCalendarWeekNumber() {
+	public int getCalendarWeekNumber() {	
 		return weekMonday.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
 	}
 
@@ -57,7 +57,7 @@ public class WeeklySummary {
 	/**
 	 * Helper method to group the doses by calendar week
 	 * 
-	 * @param vaccinationData vaccination data entires to include
+	 * @param vaccinationData vaccination data entries to include
 	 * @return a map that maps all calendar weeks (indicated by their mondays) to
 	 *         the issued doses in that week
 	 */

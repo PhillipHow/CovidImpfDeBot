@@ -3,8 +3,11 @@ package de.philliphow.covidimpfde.strings;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+
+import de.philliphow.covidimpfde.api.models.DeliveryDataRow;
 
 /**
  * Util class to get beautifully formatted Strings
@@ -94,6 +97,33 @@ public class StrUtil {
 			format = DateTimeFormatter.ofPattern("d. MMMM YYYY", Locale.GERMAN);
 
 		return "am " + then.format(format);
+	}
+	
+	/**
+	 * @param oneDayOfTheWeek an arbitrary day of the week
+	 * @return a string like "2 weeks ago" or "the week of the 4.5."
+	 */
+	public static String week(LocalDate oneDayOfTheWeek) {
+		
+		LocalDate thisWeekMonday = DeliveryDataRow.getMondayFor(LocalDate.now());
+		LocalDate givenWeekMonday = DeliveryDataRow.getMondayFor(oneDayOfTheWeek);
+		
+		long dayDifference = givenWeekMonday.until(thisWeekMonday, ChronoUnit.DAYS);
+		assert ((dayDifference % 7) == 0);
+	
+
+	
+		if (dayDifference == 0)
+			return "diese Woche";
+		if (dayDifference == 7)
+			return "letzte Woche";
+		if (dayDifference <= 7*6) {
+			return  "vor " + (dayDifference/7) + " Wochen";
+		}
+		
+		
+		return "in der Woche vom " + givenWeekMonday.get(ChronoField.ALIGNED_WEEK_OF_MONTH) + "." + 
+								givenWeekMonday.get(ChronoField.MONTH_OF_YEAR) + ".";
 	}
 
 	public static String calendarWeek(int weekNumber) {

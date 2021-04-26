@@ -1,6 +1,7 @@
 package de.philliphow.covidimpfde.api.models;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,8 +63,16 @@ public class DeliveryDataRow extends AbstractTsvRow {
 		super(DeliveryDataRow.generateKeyValueMap(date, vaccine, region, doses));
 	}
 
-	public LocalDate getDate() {
+	private LocalDate getDate() {
 		return LocalDate.parse(this.getRawStringField(DeliveryDataField.DATE.getFieldName()));
+	}
+	
+	public int getCalendarWeek() {
+		return getDate().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+	}
+	
+	public LocalDate getCalendarWeekMonday() {
+		return getMondayFor(this.getDate());
 	}
 
 	/**
@@ -105,7 +114,7 @@ public class DeliveryDataRow extends AbstractTsvRow {
 
 	/**
 	 * Combines two similar deliveries. <i>Similar</i> means that the two deliveries
-	 * contained the same vaccine and were issued on the same day. The number of
+	 * contained the same vaccine and were issued in the same week. The number of
 	 * doses are added to each other. Method can be used to combine multiple local
 	 * deliveries to get one big federal delivery.
 	 * 
@@ -118,7 +127,7 @@ public class DeliveryDataRow extends AbstractTsvRow {
 	 */
 	public static DeliveryDataRow combineDeliveryParts(DeliveryDataRow onePart, DeliveryDataRow anotherPart) {
 
-		if (onePart.referencesTheSameFederalDeliveryAs(anotherPart)) {
+		if (onePart.referenceTheSameWeeklyDelivery(anotherPart)) {
 			return new DeliveryDataRow(onePart.getDate(), onePart.getVaccineIdentifier(), "MULTIPLE",
 					onePart.getDoses() + anotherPart.getDoses());
 		} else {
@@ -140,8 +149,8 @@ public class DeliveryDataRow extends AbstractTsvRow {
 		return "DeliveryDataRow " + super.toString();
 	}
 
-	private boolean referencesTheSameFederalDeliveryAs(DeliveryDataRow other) {
-		return this.getDate().equals(other.getDate())
+	private boolean referenceTheSameWeeklyDelivery(DeliveryDataRow other) {
+		return this.getCalendarWeekMonday().equals(other.getCalendarWeekMonday())
 				&& this.getVaccineIdentifier().equals(other.getVaccineIdentifier());
 	}
 
@@ -151,9 +160,15 @@ public class DeliveryDataRow extends AbstractTsvRow {
 			return false;
 		DeliveryDataRow other = (DeliveryDataRow) obj;
 
-		return this.referencesTheSameFederalDeliveryAs(other) && this.getDoses() == other.getDoses()
+		return this.referenceTheSameWeeklyDelivery(other) && this.getDoses() == other.getDoses()
 				&& this.getRegion().equals(other.getRegion());
 
+	}
+	
+	public static LocalDate getMondayFor(LocalDate date) {
+		int dayOfWeek = date.getDayOfWeek().getValue();
+		LocalDate monday = date.minusDays(dayOfWeek - 1);
+		return monday;
 	}
 
 }

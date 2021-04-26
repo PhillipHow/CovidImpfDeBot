@@ -24,15 +24,18 @@ class DeliveryDataRowTest {
 	public void setUp() {
 		example = new DeliveryDataRow("2020-12-26	comirnaty	DE-SL	9750", "date	impfstoff	region	dosen");
 		example2 = new DeliveryDataRow("2020-12-26	comirnaty	DE-BW	11500", "date	impfstoff	region	dosen");
-		differentFederalDeliveryExample1 = new DeliveryDataRow("2020-12-27	comirnaty	DE-SH	1300",
+		// same vaccine, but one week later
+		differentFederalDeliveryExample1 = new DeliveryDataRow("2020-01-07	comirnaty	DE-SH	1300",
 				"date	impfstoff	region	dosen");
-		differentFederalDeliveryExample2 = new DeliveryDataRow("2020-12-26	astra	DE-NI	1550",
+		// same week, but different vaccine
+		differentFederalDeliveryExample2 = new DeliveryDataRow("2021-12-27	astra	DE-NI	1550",
 				"date	impfstoff	region	dosen");
 	}
 
 	@Test
 	public void dateIsCorrect() {
-		assertEquals(LocalDate.of(2020, 12, 26), example.getDate());
+		// we need the monday for 26/12 here, hence 21/12
+		assertEquals(LocalDate.of(2020, 12, 21), example.getCalendarWeekMonday());
 	}
 
 	@Test
@@ -89,7 +92,8 @@ class DeliveryDataRowTest {
 	public void combiningPartsIsWorking() {
 
 		DeliveryDataRow combined = DeliveryDataRow.combineDeliveryParts(example, example2);
-		assertEquals(combined.getDate(), example.getDate());
+		assertEquals(combined.getCalendarWeek(), example.getCalendarWeek());
+		assertEquals(combined.getCalendarWeekMonday(), example.getCalendarWeekMonday());
 		assertEquals(combined.getDoses(), example.getDoses() + example2.getDoses());
 		assertEquals(combined.getVaccine(), example.getVaccine());
 	}
@@ -104,6 +108,7 @@ class DeliveryDataRowTest {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			DeliveryDataRow.combineDeliveryParts(example, differentFederalDeliveryExample2);
 		});
+		
 	}
 
 }

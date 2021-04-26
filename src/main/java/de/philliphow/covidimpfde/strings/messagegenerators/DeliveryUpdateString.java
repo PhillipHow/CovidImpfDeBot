@@ -18,7 +18,7 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 	/**
 	 * How many deliveries should appear in the lastDeliveries section
 	 */
-	private final static int LAST_DELIVERIES_SHOW_N = 10;
+	private final static int LAST_DELIVERIES_SHOW_N = 8;
 	/**
 	 * the data interpreter containing the vaccination data
 	 */
@@ -38,24 +38,25 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(getHeader());
-		sb.append(getVaccinesOverview());
-		sb.append(getBiggestDelivery());
 		sb.append(getLastDeliveries());
+		sb.append(getBiggestDelivery());
+		sb.append(getVaccinesOverview());
 		sb.append(getFooter());
 
 		return sb.toString();
 	}
 
 	private String getHeader() {
-		String deliveryDate = StrUtil.date(data.getLatestDelivery().getDate());
-		String numberOfDoses = StrUtil.number(data.getLatestDelivery().getDoses());
-		String vaccine = data.getLatestDelivery().getVaccine().getHumamReadableName();
+		String deliveryDate = StrUtil.week(data.getLatestDelivery().getCalendarWeekMonday());
+		String numberOfDoses = StrUtil.number(data.getLastWeekDelivieredDoses());
+		String numSuppliers = StrUtil.number(data.getLastWeekNumberOfSuppliers());
 
 		return String.format(
-				"*Neuer Stoff ist da!*\n----------------------\nEine neue Lieferung wurden registriert - *%s* wurden *%s* Dosen von *%s* geliefert!\n\n",
-				deliveryDate, numberOfDoses, vaccine);
+				"*Neuer Stoff ist da!*\n----------------------\nEine neue Lieferung wurden registriert - *%s* wurden insgesamt *%s* Dosen "
+				+ "von *%s* Lieferanten geliefert!\n\n",
+				deliveryDate, numberOfDoses, numSuppliers);
 	}
-
+	
 	private String getVaccinesOverview() {
 		StringBuilder sb = new StringBuilder();
 		data.getDosesDeliveredByVaccine().entrySet().forEach(vaccineDeliveries -> sb
@@ -64,7 +65,7 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 		String vaccineShareString = sb.toString();
 		String totalDoses = StrUtil.number(data.getTotalDeliveredDoses());
 
-		return String.format("%sInsgesamt -- *%s*\n\n", vaccineShareString, totalDoses);
+		return String.format("Insgesamt: -- *%s*\n*%s*\n", totalDoses, vaccineShareString);
 
 	}
 
@@ -80,7 +81,7 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 		DeliveryDataRow biggestDelivery = data.getBiggestDelivery();
 		String deliveryVaccineName = biggestDelivery.getVaccine().getHumamReadableName();
 		String deliveryDoses = StrUtil.number(biggestDelivery.getDoses());
-		String date = StrUtil.date(biggestDelivery.getDate());
+		String date = StrUtil.week(biggestDelivery.getCalendarWeekMonday());
 
 		return String.format("Die größte Lieferung bis jetzt --\n*%s* Dosen %s von *%s*\n\n", deliveryDoses, date,
 				deliveryVaccineName);
@@ -98,7 +99,7 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 	private String getOneDeliveryRow(DeliveryDataRow delivery) {
 		String doses = StrUtil.number(delivery.getDoses());
 		String vaccine = delivery.getVaccine().getHumamReadableName();
-		String date = StrUtil.date(delivery.getDate());
+		String date = StrUtil.week(delivery.getCalendarWeekMonday());
 
 		return String.format("*%s* von %s (*%s*)\n", doses, vaccine, date);
 	}

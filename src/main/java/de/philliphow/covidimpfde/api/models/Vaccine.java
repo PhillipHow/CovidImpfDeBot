@@ -44,6 +44,8 @@ public class Vaccine {
 		vaccines.add(new Vaccine(VaccinationsDataField.SHOTS_TOTAL_MODERNA, "moderna", "Moderna"));
 		vaccines.add(new Vaccine(VaccinationsDataField.SHOTS_TOTAL_BIONTECH, "comirnaty", "Biontech/Pfizer"));
 		vaccines.add(new Vaccine(VaccinationsDataField.SHOTS_TOTAL_ASTRA, "astra", "Astra Zeneca"));
+		
+		//TODO: Add field for johnson as soon as first vaccinations come in
 		return vaccines;
 	}
 
