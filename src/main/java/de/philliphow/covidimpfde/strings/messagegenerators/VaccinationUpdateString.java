@@ -110,7 +110,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 
 		if (latestUpdateDayRanking != 1) {
 			return String.format(
-					"%s entspricht dem *%s Tag* seit Beginn der Impfkampange. Der beste Tag war *%s* mit *%s* Impfungen an einem Tag.\n\n",
+					"*%s* entspricht dem *%s Tag* seit Beginn der Impfkampagne. Der beste Tag war *%s* mit *%s* Impfungen an einem Tag.\n\n",
 					latestUpdateShots, latestUpdateRanking, recordDay, recordDayShots);
 		} else {
 			return String.format("Der heutige Tag stellt mit *%s* Dosen einen neuen Impfrekord auf!\n\n",
@@ -120,11 +120,18 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 
 	private String getHerdImmunityEstimation() {
 		String dailyFirstShotsMovingAverage = StrUtil.number((int) dataInterpreter.getMovingFirstShotAverage());
-		String herdImmityDate = StrUtil.date(dataInterpreter.getHerdImmunityEstimate());
-
+		String dailyTotalShotsMovingAverage = StrUtil.number((int) dataInterpreter.getMovingTotalShotsAverage());
+		String herdImmunitydateFirstShot60 = StrUtil.date(dataInterpreter.getOptimisticOneShotHerdImmunityDate());
+		String herdImmunityDateFirstShot80 = StrUtil.date(dataInterpreter.getRealisticOneShotHerdImmunityDate());
+		String herdImmunityDateTwoShots60 = StrUtil.date(dataInterpreter.getOptimisticTwoShotHerdImmunityDate());
+		String herdImmunityDateTwoShots80 = StrUtil.date(dataInterpreter.getRealisticTwoShotHerdImmunityDate());
+		
 		return String.format(
-				"Würde das Impftempo unverändert bleiben (%s Erstdosen/Tag in den letzten 2 Wochen), hätten wir Herdenimmunität etwa am *%s* erreicht.\n\n",
-				dailyFirstShotsMovingAverage, herdImmityDate);
+				"Würde das Impftempo unverändert bleiben (*%s* Erstdosen in den letzten 2 Wochen), hätten...\n"
+				+ "... *%s* *60%%* der Bevölkerung mindestens eine Impfung erhalten.\n"
+				+ "... *%s* *80%%* der Bevölkerung mindestens eine Impfung erhalten.\n\n",
+				dailyFirstShotsMovingAverage, herdImmunitydateFirstShot60, 
+				herdImmunityDateFirstShot80);
 	}
 
 	private String getWeekSummary() {

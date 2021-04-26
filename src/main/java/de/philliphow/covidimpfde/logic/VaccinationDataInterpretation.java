@@ -36,7 +36,8 @@ public class VaccinationDataInterpretation {
 	 * The factor needed to reach herd immunity in the population. See method
 	 * {@code getHerdImmunityEstimate} for more discussion about this.
 	 */
-	public static final double HERD_IMMUNITY_FACTOR = 0.6;
+	public static final double HERD_IMMUNITY_FACTOR_OPTIMISTC = 0.6;
+	public static final double HERD_IMMUNITY_FACTOR_REALISTIC = 0.8;
 
 	/**
 	 * The data to be used
@@ -188,12 +189,68 @@ public class VaccinationDataInterpretation {
 
 		return 1.0 * firstDosesInPeriod / dayCounter;
 	}
+	
+	public double getMovingTotalShotsAverage() {
+		
+		int dayCounter = 0;
+		int currentVaccinationDayIndex = data.size() - 1;
+		int dosesInPeriod = 0;
+
+		while (dayCounter < MOVING_AVERAGE_DAY_COUNT && currentVaccinationDayIndex >= 0) {
+			dosesInPeriod += data.get(currentVaccinationDayIndex).getShotsToday();
+			dayCounter++;
+			currentVaccinationDayIndex--;
+		}
+
+		return 1.0 * dosesInPeriod / dayCounter;
+	}
+	
+	/**
+	 * Calculates the date on which 60% of the german population will be vaccinated
+	 * at least once, if the speed of the last {@code MOVING_AVERAGE_DAY_COUNT} days
+	 * is kept. 
+	 * @return the herd immunity estimation date
+	 */
+	public LocalDate getOptimisticOneShotHerdImmunityDate() {
+		return getOneShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_OPTIMISTC);
+	}
+	
+	/**
+	 * Calculates the date on which 80% of the german population will be vaccinated
+	 * at least once, if the speed of the last {@code MOVING_AVERAGE_DAY_COUNT} days
+	 * is kept. 
+	 * @return the herd immunity estimation date
+	 */
+	public LocalDate getRealisticOneShotHerdImmunityDate() {
+		return getOneShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_REALISTIC);
+	}
+	
+	
+	/**
+	 * Calculates the date on which 60% of the german population will have received 
+	 * two doses. Does not consider one-shot vaccines yet!
+	 * @return
+	 */
+	public LocalDate getOptimisticTwoShotHerdImmunityDate() {
+		return getTwoShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_OPTIMISTC);
+	}
+	
+	/**
+	 * Calculates the date on which 80% of the german population will have received two
+	 * doses. Does not consider one-shot vaccines yet!
+	 * @return
+	 */
+	public LocalDate getRealisticTwoShotHerdImmunityDate() {
+		return getTwoShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_REALISTIC);
+	}
+	
 
 	/**
-	 * Estimates the date to which herd immunity is reached.
+	 * Estimates the date to which a certain part of the german population
+	 * is vaccinated once. 
 	 * 
 	 * Uses the following formula: daysNeeded = (GERMAN_POPULATION *
-	 * HERD_IMMUNITY_FACTORY - alreadyVaccinated) * currentFirstShotMovingAverage
+	 * herdImmunityFactory - alreadyVaccinated) * currentFirstShotMovingAverage
 	 * 
 	 * This method builds on the following assumption:
 	 * <li>Herd immunity is reached as soon as a certain factor of the population is
@@ -207,16 +264,18 @@ public class VaccinationDataInterpretation {
 	 * estimate it to be 0.8 by now. This might be considered in a future update,
 	 * maybe containing estimates with both values.
 	 * 
-	 * @return the date at which point {@code HERD_IMMUNITY_FACTOR} of the Germany
-	 *         population have been vaccinated once, if the speed of vaccinations
+	 * @param herdImmunity number between 0 and 1, how big the percentage of people vaccinated
+	 * once should be
+	 * @return the date at which point {@code herdImmunityFactor} of the Germany
+	 *         population have been vaccinated once, if the speed of first shot vaccinations
 	 *         are similar to the last {@code MOPVING_AVERAGE_DAY_COUNT} days
 	 */
-	public LocalDate getHerdImmunityEstimate() {
+	private LocalDate getOneShotHerdImmunityDateEstimation(double herdImmunityFactor) {
 		double firstShotMovingAverage = getMovingFirstShotAverage();
 		int alreadyVaccinatedOnce = latestUpdate.getPersonsVaccinatedOnce();
-		double vaccinationGoal = GERMAN_POPULATION * HERD_IMMUNITY_FACTOR;
+		double vaccinationGoal = GERMAN_POPULATION * herdImmunityFactor;
 		double peopleThatStillNeedToBeVaccinated = vaccinationGoal - alreadyVaccinatedOnce;
-
+		
 		if (alreadyVaccinatedOnce > vaccinationGoal) {
 			// goal has already been reached, find out when
 			return data.stream().filter(row -> row.getPersonsVaccinatedOnce() > vaccinationGoal).findFirst().get()
@@ -225,8 +284,25 @@ public class VaccinationDataInterpretation {
 			int daysNeeded = (int) (peopleThatStillNeedToBeVaccinated / firstShotMovingAverage);
 			return getLatestUpdate().getDate().plus(daysNeeded, ChronoUnit.DAYS);
 		}
-
 	}
+	
+	private LocalDate getTwoShotHerdImmunityDateEstimation(double herdImmunityFactor) {
+		double shotMovingAverage = getMovingTotalShotsAverage();
+		int totalShotsGiven = latestUpdate.getTotalShots();
+		double shotGoal = GERMAN_POPULATION * herdImmunityFactor * 2; // 2 doses per person
+		double shotsThatAreStillNeeded = shotGoal - totalShotsGiven;
+		
+		if (totalShotsGiven > shotGoal) {
+			// goal has already been reached, find out when
+			return data.stream().filter(row -> row.getTotalShots() > shotGoal).findFirst().get()
+					.getDate();
+		} else {
+			int daysNeeded = (int) (shotsThatAreStillNeeded / shotMovingAverage);
+			return getLatestUpdate().getDate().plus(daysNeeded, ChronoUnit.DAYS);
+		}
+		
+	}
+	
 
 	/**
 	 * @return all updates during the last 7 days
