@@ -16,13 +16,13 @@ firstDosesIssued = (how many peole have received their first dose);
 GERMAN_POPULATION = 83157201
 HERD_IMMUNITY_FAC = 0.6 or 0.8
 
-peopleThatStillNeedToBeVaccinated = (GERMAN_POPULATION * HERD_IMMUNITY_FAC) - 			firstDosesIssued;
+peopleThatStillNeedToBeVaccinated = (GERMAN_POPULATION * HERD_IMMUNITY_FAC) - firstDosesIssued;
 daysNeeded = peopleThatStillNeedToBeVaccinated / movingAverageDoses; 
 
 return Date.today().plusDays(daysNeeded);
 ```
 
-The code can be found in [VaccinationDataInterpretation.java](../src/main/java/de/philliphow/covidimpfde/logic/VaccinationDataInterpretation.java). 
+The code can be found in [VaccinationDataInterpretation.java](https://github.com/PhillipHow/CovidImpfDeBot/blob/master/src/main/java/de/philliphow/covidimpfde/logic/VaccinationDataInterpretation.java). 
 
 As you can see, this (fairly simple) algorithm only takes first doses into account. This decision was made for several reasons. First of all, far more first than second doses are currently being distributed - this makes it difficult to calculate the date when a large proportion of the population has received both doses (at least based on current vaccination rates). In addition, the current evidence seems to be indicating that one shot already provides sufficient protection. It is therefore to be expected that e.g. contact restrictions can already be relaxed when a large part of the population has received their first dose - this makes the date of first dose herd immunity more interesting. 
 
