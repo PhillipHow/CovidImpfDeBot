@@ -20,7 +20,7 @@ public class URLStringRessourceTest {
 
 	private static final String TEST_LOCAL_FILE = "testfile.txt";
 	private static final String TEST_LOCAL_FILE_NOT_EXISTS = "askdlflakjerlkajelrklaera.txt";
-	private static final String TEST_ONLINE_RESOURCE = "https://jsonplaceholder.typicode.com/todos/1";
+	private static final String TEST_ONLINE_RESOURCE = "https://httpbin.org/get";
 	private static final String TEST_ONLINE_RESOURCE_NOT_EXISTS = "https://zerjklaerlkajdakjle.com";
 	private static final String TEST_FILE_CONTENT = "test string";
 
