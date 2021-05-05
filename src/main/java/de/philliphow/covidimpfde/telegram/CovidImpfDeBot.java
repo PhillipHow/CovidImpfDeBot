@@ -215,7 +215,9 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 	private void sendDeliveryUpdateToAllSubs() throws SubPersistenceException {
 
 		UpdateMessageBuilder<DeliveryDataRow> updateBuilder = new DeliveryUpdateBuilder()
-				.setContentData(DeliveryApiManager.getInstance(debugMode).getCurrentData()).setIsSubbed(true);
+				.setContentData(DeliveryApiManager.getInstance(debugMode).getCurrentData())
+				.setIsSubbed(true)
+				.setSubCount(new SubListPersistence().getSubCount());
 
 		this.sendUpdateToAllSubs(updateBuilder);
 	}
@@ -223,7 +225,9 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 	private void sendVaccinationUpdateToAllSubs() throws SubPersistenceException {
 
 		UpdateMessageBuilder<VaccinationDataRow> updateBuilder = new VaccinationUpdateBuilder()
-				.setContentData(VaccinationsApiManager.getInstance(debugMode).getCurrentData()).setIsSubbed(true);
+				.setContentData(VaccinationsApiManager.getInstance(debugMode).getCurrentData())
+				.setIsSubbed(true)
+				.setSubCount(new SubListPersistence().getSubCount());
 
 		this.sendUpdateToAllSubs(updateBuilder);
 	}

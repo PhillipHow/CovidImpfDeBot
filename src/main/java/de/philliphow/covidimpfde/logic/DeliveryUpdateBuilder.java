@@ -19,9 +19,9 @@ import de.philliphow.covidimpfde.telegram.commands.DeliveryCommand;
 public class DeliveryUpdateBuilder extends UpdateMessageBuilder<DeliveryDataRow> {
 
 	@Override
-	public String getMessageText(List<DeliveryDataRow> allDataRows, boolean isSubbed) {
+	public String getMessageText(List<DeliveryDataRow> allDataRows, boolean isSubbed, int subCount) {
 		DeliveryDataInterpretation dataInterpretation = new DeliveryDataInterpretation(allDataRows);
-		return new DeliveryUpdateString(dataInterpretation, isSubbed).getTextAsMarkdown();
+		return new DeliveryUpdateString(dataInterpretation, isSubbed, subCount).getTextAsMarkdown();
 	}
 
 	@Override

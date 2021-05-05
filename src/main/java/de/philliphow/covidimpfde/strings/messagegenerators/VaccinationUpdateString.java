@@ -33,10 +33,17 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	 * If the chat requesting this update has subscribed to daily Updates
 	 */
 	private final boolean isSubbed;
+	
+	/**
+	 * Number of bot subs
+	 */
+	private final int subCount;
 
-	public VaccinationUpdateString(VaccinationDataInterpretation vaccinationDataInterpretation, boolean isSubbed) {
+	public VaccinationUpdateString(VaccinationDataInterpretation vaccinationDataInterpretation, boolean isSubbed,
+			int subCount) {
 		this.dataInterpreter = vaccinationDataInterpretation;
 		this.isSubbed = isSubbed;
+		this.subCount = subCount;
 	}
 
 	@Override
@@ -164,7 +171,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	}
 
 	private String getFooter() {
-		return new MessageFooter(isSubbed).getTextAsMarkdown();
+		return new MessageFooter(isSubbed, subCount).getTextAsMarkdown();
 	}
 
 }

@@ -39,13 +39,20 @@ public abstract class UpdateMessageBuilder<T> {
 	private LocalDate debugDate = LocalDate.now();
 
 	/**
+	 * Number of bot subs (for message footer). Set to -1 not to show sub count.
+	 */
+	private int subCount = -1;
+	
+	
+	/**
 	 * Generates the update String from the source data.
 	 * 
 	 * @param allDataRows the source data
 	 * @param isSubbed    true if the chat is subscribed to daily bot updates
+	 * @param subCount number of bot subs
 	 * @return a String in markdown format with the update
 	 */
-	public abstract String getMessageText(List<T> allDataRows, boolean isSubbed);
+	public abstract String getMessageText(List<T> allDataRows, boolean isSubbed, int subCount);
 
 	/**
 	 * Extracts the date from a data records. Used to filter dates for debug
@@ -72,6 +79,11 @@ public abstract class UpdateMessageBuilder<T> {
 
 	public UpdateMessageBuilder<T> setContentData(List<T> allDataRows) {
 		this.allDataRows = new ArrayList<>(allDataRows);
+		return this;
+	}
+	
+	public UpdateMessageBuilder<T> setSubCount(int subCount) {
+		this.subCount = subCount;
 		return this;
 	}
 
@@ -107,7 +119,7 @@ public abstract class UpdateMessageBuilder<T> {
 		message.enableMarkdown(true);
 		message.setDisableWebPagePreview(true);
 		message.setChatId(chatId);
-		message.setText(getMessageText(vaccinationDataToUse, this.isSubbed));
+		message.setText(getMessageText(vaccinationDataToUse, this.isSubbed, this.subCount));
 
 		return message;
 	}

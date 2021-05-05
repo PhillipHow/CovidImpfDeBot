@@ -121,6 +121,21 @@ public class SubListPersistenceTest {
 		assertTrue(subs.contains(user2));
 
 	}
+	
+	@Test
+	public void testSubCount() throws SubPersistenceException {
+		
+		assertEquals(0, persistence.getSubCount());
+		
+		persistence.subscribe(user1);
+		persistence.subscribe(user2);
+		assertEquals(2, persistence.getSubCount());
+		
+		persistence.unsubscribe(user1);
+		assertEquals(1, persistence.getSubCount());
+		
+		
+	}
 
 	@Test
 	public void testMultiThreadWritesWork() throws SubPersistenceException {
@@ -129,7 +144,7 @@ public class SubListPersistenceTest {
 
 		for (int i = 0; i < 100; i++) {
 			String chatId = "AKINDALONGCHATIDWITHTHENUMBER" + i;
-			boolean shouldBeInAtTheEnd = i % 2 == 0;
+			boolean shouldBeSubbedInTheEnd = i % 2 == 0;
 
 			threads.add(new Thread() {
 
@@ -140,7 +155,7 @@ public class SubListPersistenceTest {
 						assertTrue(persistence.isSubbed(chatId));
 						persistence.unsubscribe(chatId);
 						assertFalse(persistence.isSubbed(chatId));
-						if (shouldBeInAtTheEnd) {
+						if (shouldBeSubbedInTheEnd) {
 							persistence.subscribe(chatId);
 						}
 

@@ -27,10 +27,17 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 	 * true if the chat getting the update is subscribed to daily updates
 	 */
 	private final boolean isSubbed;
+	
+	/**
+	 * Number of bot subs
+	 */
+	private final int subCount;
 
-	public DeliveryUpdateString(DeliveryDataInterpretation deliveryDataInterpretation, boolean isSubbed) {
+	public DeliveryUpdateString(DeliveryDataInterpretation deliveryDataInterpretation, boolean isSubbed, 
+			int subCount) {
 		this.data = deliveryDataInterpretation;
 		this.isSubbed = isSubbed;
+		this.subCount = subCount;
 	}
 
 	@Override
@@ -105,7 +112,7 @@ public class DeliveryUpdateString implements MessageStringGenerator {
 	}
 
 	private String getFooter() {
-		return new MessageFooter(isSubbed).getTextAsMarkdown();
+		return new MessageFooter(isSubbed, subCount).getTextAsMarkdown();
 	}
 
 }

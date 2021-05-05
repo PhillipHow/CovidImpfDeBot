@@ -101,6 +101,14 @@ public class SubListPersistence {
 			throw new SubPersistenceException(e);
 		}
 	}
+	
+	/**
+	 * Returns the number of subbed chats
+	 * @throws SubPersistenceException if the sub persistence could not be read
+	 */
+	public int getSubCount() throws SubPersistenceException {
+			return this.getAllSubs().size();
+	}
 
 	private List<String> readList() throws IOException {
 		ensureFilesExists();
@@ -132,9 +140,12 @@ public class SubListPersistence {
 	private void ensureFilesExists() throws IOException {
 		File file = new File(PERSISTENCE_FILENAME);
 		if (!file.exists()) {
-			FileWriter fw = new FileWriter(PERSISTENCE_FILENAME);
-			fw.write("");
-			fw.close();
+			synchronized (PERSISTENCE_FILENAME) {
+				FileWriter fw = new FileWriter(PERSISTENCE_FILENAME);
+				fw.write("");
+				fw.close();
+			}
 		}
 	}
+
 }

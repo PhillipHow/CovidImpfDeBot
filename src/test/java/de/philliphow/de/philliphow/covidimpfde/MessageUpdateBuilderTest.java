@@ -28,7 +28,7 @@ public class MessageUpdateBuilderTest {
 		example = new UpdateMessageBuilder<LocalDate>() {
 
 			@Override
-			public String getMessageText(List<LocalDate> allDataRows, boolean isSubbed) {
+			public String getMessageText(List<LocalDate> allDataRows, boolean isSubbed, int subCount) {
 				StringBuilder sb = new StringBuilder();
 				sb.append(isSubbed + " ");
 				allDataRows.forEach(data -> sb.append(data.toString() + " "));

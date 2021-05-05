@@ -20,9 +20,9 @@ import de.philliphow.covidimpfde.telegram.commands.VaccinationCommand;
 public class VaccinationUpdateBuilder extends UpdateMessageBuilder<VaccinationDataRow> {
 
 	@Override
-	public String getMessageText(List<VaccinationDataRow> allDataRows, boolean isSubbed) {
+	public String getMessageText(List<VaccinationDataRow> allDataRows, boolean isSubbed, int subCount) {
 		VaccinationDataInterpretation vaccinationDataInterpretation = new VaccinationDataInterpretation(allDataRows);
-		return new VaccinationUpdateString(vaccinationDataInterpretation, isSubbed).getTextAsMarkdown();
+		return new VaccinationUpdateString(vaccinationDataInterpretation, isSubbed, subCount).getTextAsMarkdown();
 	}
 
 	@Override
