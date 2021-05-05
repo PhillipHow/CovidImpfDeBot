@@ -13,8 +13,6 @@ import de.philliphow.covidimpfde.exceptions.ImpfDashboardApiException;
 
 public class VaccineTest {
 
-	// will fail until johnson&johnson is fully integrated - but 
-	// can only integrate j&j when it appears in vaccinations.tsv
 	@Test
 	public void everyVaccineInCurrentDeliveryDataExistsInCode() throws ImpfDashboardApiException {
 

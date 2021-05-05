@@ -27,6 +27,7 @@ public class VaccinationDataRow extends AbstractTsvRow {
 	public static enum VaccinationsDataField {
 		DATE("date"), SHOTS_TOTAL("dosen_kumulativ"), SHOTS_TOTAL_BIONTECH("dosen_biontech_kumulativ"),
 		SHOTS_TOTAL_MODERNA("dosen_moderna_kumulativ"), SHOTS_TOTAL_ASTRA("dosen_astrazeneca_kumulativ"),
+		SHOTS_TOTAL_JOHNSON("dosen_johnson_kumulativ"),
 
 		SHOTS_TODAY("dosen_differenz_zum_vortag"), SHOTS_TODAY_FIRST("dosen_erst_differenz_zum_vortag"),
 		SHOTS_TODAY_SECOND("dosen_zweit_differenz_zum_vortag"),
