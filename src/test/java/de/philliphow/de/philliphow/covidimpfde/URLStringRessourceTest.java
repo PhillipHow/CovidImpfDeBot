@@ -77,7 +77,7 @@ public class URLStringRessourceTest {
 	@Test
 	public void testOnlineRessourceNotExistThrowsException() throws MalformedURLException {
 
-		example = new UrlStringRessourceResolver(new URL(new URL("file:"), TEST_ONLINE_RESOURCE_NOT_EXISTS));
+		example = new UrlStringRessourceResolver(new URL(TEST_ONLINE_RESOURCE_NOT_EXISTS));
 
 		Assertions.assertThrows(IOException.class, () -> {
 			example.getAsStringSync();

@@ -50,7 +50,6 @@ public class DeliveryDataInterpretation {
 	 * @return the total number of doses delivered during the last week 
 	 */
 	public int getLastWeekDelivieredDoses() {
-		System.out.println(getLastWeeksDeliveries());
 		return getLastWeeksDeliveries().stream().mapToInt(delivery -> delivery.getDoses()).sum();
 	}
 	

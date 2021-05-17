@@ -52,8 +52,8 @@ public abstract class AbstractTsvApiWithCache<T extends AbstractTsvRow> {
 		Logger.debug("Querying {} for new elements", dataSourceUrl);
 		List<T> newData = getFreshData();
 
-		if (newData.size() != cache.size()) {
-			Logger.debug("Data list length has changed!");
+		if (newData.size() > cache.size()) {
+			Logger.debug("Data list length has changed: old {} lines, new {} lines", cache.size(), newData.size());
 			cache = newData;
 			return true;
 		} else {
