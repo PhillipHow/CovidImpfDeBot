@@ -63,6 +63,20 @@ public class VaccinationDataInterpretation {
 	public int getLatestUpdateShotsToday() {
 		return latestUpdate.getShotsToday();
 	}
+	
+	/**
+	 * @return how many first doeses have been issued on the last day
+	 */
+	public int getLatestUpdateNewFirstShots() {
+		return latestUpdate.getFirstShotsToday();
+	}
+	
+	/**
+	 * @return how many second doeses have been issued on the last day
+	 */
+	public int getLatestUpdateNewSecondShots() {
+		return latestUpdate.getSecondShotsToday();
+	}
 
 	/**
 	 * @return the difference between the shots issued on the last day and the day
@@ -322,5 +336,6 @@ public class VaccinationDataInterpretation {
 		return weeklySummarys.subList(0, Math.min(n, weeklySummarys.size()));
 
 	}
+
 
 }

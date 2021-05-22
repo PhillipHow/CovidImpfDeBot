@@ -82,12 +82,16 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 
 		String shotsTotal = StrUtil.number(dataInterpreter.getTotalShots());
 		String firstShotNumber = StrUtil.number(dataInterpreter.getTotalPersonsVaccinatedOnce());
-		String personsVaccinatedTwice = StrUtil.number(dataInterpreter.getTotalPersonsVaccintedTwice());
+		String firstShotsDiff = StrUtil.difference(dataInterpreter.getLatestUpdateNewFirstShots());
+		String secondShotsNumber = StrUtil.number(dataInterpreter.getTotalPersonsVaccintedTwice());
+		String secondShotsDiff = StrUtil.difference(dataInterpreter.getLatestUpdateNewSecondShots());
 		String firstShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedOnce());
 		String secondShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedFull());
+		
 
-		return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*)\n2/2 Dosen: *%s* (*%s*)\n\n", shotsTotal,
-				firstShotNumber, firstShotsPercent, personsVaccinatedTwice, secondShotsPercent);
+		return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*), *%s*\n2/2 Dosen: *%s* (*%s*), *%s*\n\n",
+				shotsTotal,
+				firstShotNumber, firstShotsPercent, firstShotsDiff, secondShotsNumber, secondShotsPercent, secondShotsDiff);
 	}
 
 	private String getVaccinesUpdate() {
