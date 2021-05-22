@@ -7,6 +7,7 @@ import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.Vaccinatio
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.POPULATION_QUOTA_SECOND_SHOT;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY_FIRST;
+import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY_SECOND;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TOTAL;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TOTAL_ASTRA;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TOTAL_BIONTECH;
@@ -109,6 +110,24 @@ public class VaccinationDataInterpretationTest {
 
 		assertEquals(200, interpretation.getTotalShots());
 
+	}
+	
+	@Test
+	public void getNewFirstDosesIsCorrect() {
+		interpretation = getInterpretationFor(
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(2)).with(SHOTS_TODAY_FIRST, 100).get(),
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(1)).with(SHOTS_TODAY_FIRST, 200).get());
+		
+		assertEquals(200, interpretation.getLatestUpdateNewFirstShots());
+	}
+	
+	@Test
+	public void getNewSecondDoesesIsCorrect() {
+		interpretation = getInterpretationFor(
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(2)).with(SHOTS_TODAY_SECOND, 100).get(),
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(1)).with(SHOTS_TODAY_SECOND, 200).get());
+		
+		assertEquals(200, interpretation.getLatestUpdateNewSecondShots());
 	}
 
 	@Test
