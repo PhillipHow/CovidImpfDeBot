@@ -3,6 +3,7 @@ package de.philliphow.covidimpfde.api;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 
 import de.philliphow.covidimpfde.api.models.VaccinationDataRow;
 import de.philliphow.covidimpfde.exceptions.ImpfDashboardApiException;
@@ -45,6 +46,7 @@ public class VaccinationsApiManager extends AbstractTsvApiWithCache<VaccinationD
 		return new VaccinationDataRow(tsvDataRow, firstRow);
 	}
 
+
 	/***
 	 * Queries the vaccination data API and refreshed the cache if new data has been
 	 * found.
@@ -58,6 +60,13 @@ public class VaccinationsApiManager extends AbstractTsvApiWithCache<VaccinationD
 		} catch (IOException exception) {
 			throw new ImpfDashboardApiException(exception);
 		}
+	}
+	
+	/***
+	 * @return the date of the newest entry in the current cache
+	 */
+	public LocalDate getLastUpdateDate() {
+		return this.getCurrentData().get(this.getCurrentData().size()-1).getDate();
 	}
 
 	/***

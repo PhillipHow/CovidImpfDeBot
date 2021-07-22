@@ -26,7 +26,7 @@ public class SubscriptionAnswerString implements MessageStringGenerator {
 
 	public static SubscriptionAnswerString subscriptionSucessfull() {
 		return new SubscriptionAnswerString(
-				"Dieser Chat enthält ab jetzt tägliche Updates. Um die täglichen Updates zu beenden, klicke /unsub.");
+				"Dieser Chat enthält ab jetzt wöchentliche Updates. Um die wöchentlichen Updates zu beenden, klicke /unsub.");
 	}
 
 	public static SubscriptionAnswerString alreadySubscribed() {
@@ -35,7 +35,7 @@ public class SubscriptionAnswerString implements MessageStringGenerator {
 
 	public static SubscriptionAnswerString unsubscribeSucessfull() {
 		return new SubscriptionAnswerString(
-				"Dieser Chat erhält keine täglichen Updates mehr. Wenn du es dir anders überlegst, klick /sub");
+				"Dieser Chat erhält keine wöchentliche Updates mehr. Wenn du es dir anders überlegst, klick /sub");
 	}
 
 	public static SubscriptionAnswerString notSubscribed() {

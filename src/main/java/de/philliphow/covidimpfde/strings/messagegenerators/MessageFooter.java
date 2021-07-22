@@ -23,9 +23,9 @@ public class MessageFooter implements MessageStringGenerator {
 				GITHUB_LINK));
 
 		if (!isSubbed) {
-			sb.append("Tägliche Updates erhalten - /sub ");
+			sb.append("Wöchentliche Updates erhalten - /sub ");
 		} else {
-			sb.append("Tägliches Update deabonnieren - /unsub ");
+			sb.append("Wöchentliche Update deabonnieren - /unsub ");
 		}
 		
 		sb.append("\n");

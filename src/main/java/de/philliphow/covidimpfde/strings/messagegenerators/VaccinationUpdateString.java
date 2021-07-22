@@ -50,21 +50,30 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	public String getTextAsMarkdown() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(getHeader());
-		sb.append(getFirstSecondShotUpdate());
-		sb.append(getVaccinesUpdate());
+		sb.append(getHeadline());
 
 		if (dataInterpreter.latestUpdateIsSunday()) {
+			sb.append(getFirstSecondShotUpdate(false));
+			sb.append(getVaccinesUpdate(false));
 			sb.append(getWeekSummary());
 			sb.append(getCalendarWeeksSummary());
 		} else {
-			sb.append(getRecordDaysUpdate());
+			sb.append(getHeader());
+			sb.append(getVaccinesUpdate(true));
+			sb.append(getFirstSecondShotUpdate(true));
+			//sb.append(getRecordDaysUpdate());				//disabled for now - not interesting anymore
 			sb.append(getHerdImmunityEstimation());
 		}
 
 		sb.append(getFooter());
 
 		return sb.toString();
+	}
+	
+	private String getHeadline() {
+		String updateType = dataInterpreter.latestUpdateIsSunday() ? "Wöchentliches Impf-Update" : "Impf-Update";
+		
+		return String.format("*%s*\n-----------------------\n", updateType);
 	}
 
 	private String getHeader() {
@@ -74,11 +83,11 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 		String oneWeekAgoDiff = StrUtil.difference(dataInterpreter.getLatestUpdateDiffOneWeekAgo());
 
 		return String.format(
-				"*Impf-Update*\n-----------------------\n*%s* wurden *%s Dosen* verteilt. Dies entspricht einer Veränderung von *%s* im Vergleich zu vor einer Woche, aber meistens erfolgen noch Nachmeldungen.\n\n",
+				"*%s* wurden *%s Dosen* verteilt. Dies entspricht einer Veränderung von *%s* im Vergleich zu vor einer Woche, aber meistens erfolgen noch Nachmeldungen.\n\n",
 				dateString, updateShots, oneWeekAgoDiff);
 	}
 
-	private String getFirstSecondShotUpdate() {
+	private String getFirstSecondShotUpdate(boolean showDiff) {
 
 		String shotsTotal = StrUtil.number(dataInterpreter.getTotalShots());
 		String firstShotNumber = StrUtil.number(dataInterpreter.getTotalPersonsVaccinatedOnce());
@@ -88,28 +97,36 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 		String firstShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedOnce());
 		String secondShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedFull());
 		
-
-		return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*), *%s*\n2/2 Dosen: *%s* (*%s*), *%s*\n\n",
-				shotsTotal,
-				firstShotNumber, firstShotsPercent, firstShotsDiff, secondShotsNumber, secondShotsPercent, secondShotsDiff);
+		if (showDiff)
+			return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*), *%s*\n2/2 Dosen: *%s* (*%s*), *%s*\n\n",
+					shotsTotal,
+					firstShotNumber, firstShotsPercent, firstShotsDiff, secondShotsNumber, secondShotsPercent, secondShotsDiff);
+		else
+			return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*)\n2/2 Dosen: *%s* (*%s*)\n\n",
+					shotsTotal,
+					firstShotNumber, firstShotsPercent, secondShotsNumber, secondShotsPercent);
+	
 	}
 
-	private String getVaccinesUpdate() {
+	private String getVaccinesUpdate(boolean showDiff) {
 
 		StringBuilder sb = new StringBuilder();
-		Vaccine.getAll().forEach(vaccine -> sb.append(getVaccineUpdate(vaccine)));
+		Vaccine.getAll().forEach(vaccine -> sb.append(getVaccineUpdate(vaccine, showDiff)));
 		sb.append("\n");
 		return sb.toString();
 	}
 
-	private String getVaccineUpdate(Vaccine vaccine) {
+	private String getVaccineUpdate(Vaccine vaccine, boolean showDiff) {
 
 		String vaccineName = vaccine.getHumamReadableName();
 		String shotsTotal = StrUtil.number(dataInterpreter.getLatestUpdate().getTotalShotsByVaccine(vaccine));
 		String dayDiff = StrUtil.difference(dataInterpreter.getLatestUpdateDiffBy(vaccine));
 		String percentVaccine = StrUtil.percent(dataInterpreter.getVaccineShare(vaccine));
 
-		return String.format("%s: *%s* (*%s*), *%s*\n", vaccineName, shotsTotal, percentVaccine, dayDiff);
+		if (showDiff)
+			return String.format("%s: *%s* (*%s*), *%s*\n", vaccineName, shotsTotal, percentVaccine, dayDiff);
+		else
+			return String.format("%s: *%s* (*%s*)\n", vaccineName, shotsTotal, percentVaccine);
 	}
 
 	private String getRecordDaysUpdate() {

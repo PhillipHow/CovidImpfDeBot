@@ -186,9 +186,10 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 		executorService.scheduleAtFixedRate(() -> {
 
 			try {
-				if (checkForNewVaccinationData())
+				// only send vaccination updates once a week for now
+				if (checkForNewVaccinationData() && lastVaccinationUpdateWasOnSunday())
 					sendVaccinationUpdateToAllSubs();
-
+				
 				if (checkForNewDeliveryData())
 					sendDeliveryUpdateToAllSubs();
 
@@ -202,6 +203,10 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 
 		Logger.info("Will check for new data every {} seconds", getPollingIntervallSeconds());
 
+	}
+
+	private boolean lastVaccinationUpdateWasOnSunday() {
+		return (VaccinationsApiManager.getInstance(debugMode).getLastUpdateDate().getDayOfWeek().getValue() == 7);
 	}
 
 	private boolean checkForNewDeliveryData() throws ImpfDashboardApiException {
