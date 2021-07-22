@@ -1,5 +1,6 @@
 package de.philliphow.covidimpfde.strings.messagegenerators;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import de.philliphow.covidimpfde.api.models.VaccinationDataRow;
@@ -24,6 +25,11 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	 */
 	private static final int CALENDAR_WEEK_SUMMARY_SHOW_WEEKS = 7;
 
+	/**
+	 * Population quota milestones to list
+	 */
+	private static double[] POP_QUOTA_MILESTONES = {0.5, 0.6, 0.7, 0.8, 0.9};
+	
 	/**
 	 * the data interpreter containing the vaccination data
 	 */
@@ -57,12 +63,13 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 			sb.append(getVaccinesUpdate(false));
 			sb.append(getWeekSummary());
 			sb.append(getCalendarWeeksSummary());
+			sb.append(getMilestoneEstimations());
 		} else {
 			sb.append(getHeader());
 			sb.append(getVaccinesUpdate(true));
 			sb.append(getFirstSecondShotUpdate(true));
 			//sb.append(getRecordDaysUpdate());				//disabled for now - not interesting anymore
-			sb.append(getHerdImmunityEstimation());
+			sb.append(getMilestoneEstimations());
 		}
 
 		sb.append(getFooter());
@@ -129,6 +136,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 			return String.format("%s: *%s* (*%s*)\n", vaccineName, shotsTotal, percentVaccine);
 	}
 
+	@SuppressWarnings("unused")
 	private String getRecordDaysUpdate() {
 		int latestUpdateDayRanking = dataInterpreter.getLatestUpdateDayRanking();
 		String latestUpdateRanking = StrUtil.placementStr(latestUpdateDayRanking);
@@ -146,20 +154,34 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 		}
 	}
 
-	private String getHerdImmunityEstimation() {
-		String dailyFirstShotsMovingAverage = StrUtil.number((int) dataInterpreter.getMovingFirstShotAverage());
-		String dailyTotalShotsMovingAverage = StrUtil.number((int) dataInterpreter.getMovingTotalShotsAverage());
-		String herdImmunitydateFirstShot60 = StrUtil.date(dataInterpreter.getOptimisticOneShotHerdImmunityDate());
-		String herdImmunityDateFirstShot80 = StrUtil.date(dataInterpreter.getRealisticOneShotHerdImmunityDate());
-		String herdImmunityDateTwoShots60 = StrUtil.date(dataInterpreter.getOptimisticTwoShotHerdImmunityDate());
-		String herdImmunityDateTwoShots80 = StrUtil.date(dataInterpreter.getRealisticTwoShotHerdImmunityDate());
+	private String getMilestoneEstimations() {
+		StringBuilder sb = new StringBuilder("*Erstimpfungs-Meilensteinschätzungen*\n");
 		
-		return String.format(
-				"Würde das Impftempo unverändert bleiben (*%s* Erstdosen in den letzten 2 Wochen), hätten...\n"
-				+ "... *%s* *60%%* der Bevölkerung mindestens eine Impfung erhalten.\n"
-				+ "... *%s* *80%%* der Bevölkerung mindestens eine Impfung erhalten.\n\n",
-				dailyFirstShotsMovingAverage, herdImmunitydateFirstShot60, 
-				herdImmunityDateFirstShot80);
+		for(double firstShotQuota : POP_QUOTA_MILESTONES) {
+			sb.append(getMilestoneEstimationForFirstShotQuota(firstShotQuota));
+		}
+		
+		sb.append("_(beruht auf Impfgeschwindigkeit der letzten zwei Wochen)_\n");
+		
+		return sb.toString();
+	}
+	
+	private String getMilestoneEstimationForFirstShotQuota(double firstShotQuota) {
+		String percentageValue = StrUtil.percent(firstShotQuota);
+		String date = StrUtil.date(dataInterpreter.getOneShotPopQuotaVaccinatedEstimation(firstShotQuota));
+		boolean hasBeenReached = oneShotHerdImmunityGoalHasBeenReached(firstShotQuota);
+		
+		if (hasBeenReached) {
+			return String.format("*%s*: %s ✅\n", percentageValue, date);
+		} else {
+			return String.format("*%s*: %s\n", percentageValue, date);
+		}
+	}
+	
+	private boolean oneShotHerdImmunityGoalHasBeenReached(double firstShotQuota) {
+		LocalDate dateEstimation = dataInterpreter.getOneShotPopQuotaVaccinatedEstimation(firstShotQuota);
+		LocalDate dateNow = LocalDate.now();
+		return dateEstimation.isBefore(dateNow) || dateEstimation.isEqual(dateNow);
 	}
 
 	private String getWeekSummary() {
@@ -192,7 +214,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	}
 
 	private String getFooter() {
-		return new MessageFooter(isSubbed, subCount).getTextAsMarkdown();
+		return "\n" +  new MessageFooter(isSubbed, subCount).getTextAsMarkdown();
 	}
 
 }

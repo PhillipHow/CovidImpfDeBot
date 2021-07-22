@@ -6,17 +6,17 @@ Written in Java 8 with a strong focus on DRY and the SRP. Published under the MI
 
 Thanks for 325 subscribed bot users! :)
 
-## Herd immunity date calculation
+## Milestone date calculation
 
-The algorithm for calculating the herd immunity date works as follows: 
+The algorithm for calculating the milestone dates works as follows: 
 
 ```pseudocode
 movingAverageDoses = (average of first doses issued per day during last 14 days);
 firstDosesIssued = (how many peole have received their first dose);
 GERMAN_POPULATION = 83157201
-HERD_IMMUNITY_FAC = 0.6 or 0.8
+POPULATION_QUOTA_VACCINATED = 0.5 | 0.6 | 0.7 | 0.8 | 0.9
 
-peopleThatStillNeedToBeVaccinated = (GERMAN_POPULATION * HERD_IMMUNITY_FAC) - firstDosesIssued;
+peopleThatStillNeedToBeVaccinated = (GERMAN_POPULATION * POPULATION_QUOTA_VACCINATED) - firstDosesIssued;
 daysNeeded = peopleThatStillNeedToBeVaccinated / movingAverageDoses; 
 
 return Date.today().plusDays(daysNeeded);
@@ -24,9 +24,7 @@ return Date.today().plusDays(daysNeeded);
 
 The code can be found in [VaccinationDataInterpretation.java](https://github.com/PhillipHow/CovidImpfDeBot/blob/master/src/main/java/de/philliphow/covidimpfde/logic/VaccinationDataInterpretation.java). 
 
-As you can see, this (fairly simple) algorithm only takes first doses into account. This decision was made for several reasons. First of all, far more first than second doses are currently being distributed - this makes it difficult to calculate the date when a large proportion of the population has received both doses (at least based on current vaccination rates). In addition, the current evidence seems to be indicating that one shot already provides sufficient protection. It is therefore to be expected that e.g. contact restrictions can already be relaxed when a large part of the population has received their first dose - this makes the date of first dose herd immunity more interesting. 
-
-Moreover, unlike the distribution of the first dose, the distribution of the second dose is less a matter of vaccination rates and more one of constant time.  As vaccine deliveries steadily increase in size, it is expected that everyone vaccinated will receive their second dose after 12 weeks at the latest. Thus, if no shortage of doses occurs, the date for full herd immunity can be assumed to be 12 weeks after first-dose herd immunity is achieved.
+As you can see, this algorithm only takes first doses into account. This decision was made because in times of big enough vaccine deliveries, the distribution of the second dose is less a matter of vaccination rates and more one of constant time (e.g. 4-6 Weeks for the Biontech/Pfizer vaccine). 
 
 
 

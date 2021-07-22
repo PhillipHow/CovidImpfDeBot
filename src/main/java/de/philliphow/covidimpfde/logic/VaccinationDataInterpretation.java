@@ -33,13 +33,6 @@ public class VaccinationDataInterpretation {
 	public static final int GERMAN_POPULATION = 83157201;
 
 	/**
-	 * The factor needed to reach herd immunity in the population. See method
-	 * {@code getHerdImmunityEstimate} for more discussion about this.
-	 */
-	public static final double HERD_IMMUNITY_FACTOR_OPTIMISTC = 0.6;
-	public static final double HERD_IMMUNITY_FACTOR_REALISTIC = 0.8;
-
-	/**
 	 * The data to be used
 	 */
 	private final List<VaccinationDataRow> data;
@@ -218,46 +211,7 @@ public class VaccinationDataInterpretation {
 
 		return 1.0 * dosesInPeriod / dayCounter;
 	}
-	
-	/**
-	 * Calculates the date on which 60% of the german population will be vaccinated
-	 * at least once, if the speed of the last {@code MOVING_AVERAGE_DAY_COUNT} days
-	 * is kept. 
-	 * @return the herd immunity estimation date
-	 */
-	public LocalDate getOptimisticOneShotHerdImmunityDate() {
-		return getOneShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_OPTIMISTC);
-	}
-	
-	/**
-	 * Calculates the date on which 80% of the german population will be vaccinated
-	 * at least once, if the speed of the last {@code MOVING_AVERAGE_DAY_COUNT} days
-	 * is kept. 
-	 * @return the herd immunity estimation date
-	 */
-	public LocalDate getRealisticOneShotHerdImmunityDate() {
-		return getOneShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_REALISTIC);
-	}
-	
-	
-	/**
-	 * Calculates the date on which 60% of the german population will have received 
-	 * two doses. Does not consider one-shot vaccines yet!
-	 * @return
-	 */
-	public LocalDate getOptimisticTwoShotHerdImmunityDate() {
-		return getTwoShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_OPTIMISTC);
-	}
-	
-	/**
-	 * Calculates the date on which 80% of the german population will have received two
-	 * doses. Does not consider one-shot vaccines yet!
-	 * @return
-	 */
-	public LocalDate getRealisticTwoShotHerdImmunityDate() {
-		return getTwoShotHerdImmunityDateEstimation(HERD_IMMUNITY_FACTOR_REALISTIC);
-	}
-	
+		
 
 	/**
 	 * Estimates the date to which a certain part of the german population
@@ -266,25 +220,14 @@ public class VaccinationDataInterpretation {
 	 * Uses the following formula: daysNeeded = (GERMAN_POPULATION *
 	 * herdImmunityFactory - alreadyVaccinated) * currentFirstShotMovingAverage
 	 * 
-	 * This method builds on the following assumption:
-	 * <li>Herd immunity is reached as soon as a certain factor of the population is
-	 * vaccinated once. Although a second dose will be needed to gain full
-	 * protection, current research seems to indicate that one dose already offers a
-	 * reasonable protection. Furthermore, full immunization by the second doses
-	 * will only be a matter of time at that point, due to the amount of vaccine
-	 * that will be available (hopefully). That means that the full immunization
-	 * will then only be a matter of constant time by that point.
-	 * <li>The HERD_IMMNUITY_FACTOR is assumed to be 0.6, although many scientist
-	 * estimate it to be 0.8 by now. This might be considered in a future update,
-	 * maybe containing estimates with both values.
 	 * 
 	 * @param herdImmunity number between 0 and 1, how big the percentage of people vaccinated
 	 * once should be
 	 * @return the date at which point {@code herdImmunityFactor} of the Germany
 	 *         population have been vaccinated once, if the speed of first shot vaccinations
-	 *         are similar to the last {@code MOPVING_AVERAGE_DAY_COUNT} days
+	 *         are similar to the last {@code MOVING_AVERAGE_DAY_COUNT} days
 	 */
-	private LocalDate getOneShotHerdImmunityDateEstimation(double herdImmunityFactor) {
+	public LocalDate getOneShotPopQuotaVaccinatedEstimation(double herdImmunityFactor) {
 		double firstShotMovingAverage = getMovingFirstShotAverage();
 		int alreadyVaccinatedOnce = latestUpdate.getPersonsVaccinatedOnce();
 		double vaccinationGoal = GERMAN_POPULATION * herdImmunityFactor;
@@ -300,6 +243,7 @@ public class VaccinationDataInterpretation {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private LocalDate getTwoShotHerdImmunityDateEstimation(double herdImmunityFactor) {
 		double shotMovingAverage = getMovingTotalShotsAverage();
 		int totalShotsGiven = latestUpdate.getTotalShots();

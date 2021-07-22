@@ -284,49 +284,32 @@ public class VaccinationDataInterpretationTest {
 	@Test
 	public void getOptimisticOneShotHerdImmunityWorks() {
 
-		int vaccinationGoal = (int) (VaccinationDataInterpretation.HERD_IMMUNITY_FACTOR_OPTIMISTC
-				* VaccinationDataInterpretation.GERMAN_POPULATION);
+		final double POP_QUOTA_FAC = 0.6;
+		
+		int vaccinationGoal = (int) (POP_QUOTA_FAC * VaccinationDataInterpretation.GERMAN_POPULATION);
 
 		// if everybody got vaccinated today, herd immunity is reached today
 		interpretation = getInterpretationFor(new VaccinationDataRowMockBuilder().with(DATE, daysAgo(0))
 				.with(SHOTS_TODAY_FIRST, vaccinationGoal).with(PERSONS_TOTAL_FIRST, vaccinationGoal).get());
 
-		assertEquals(daysAgo(0).plusDays(0), interpretation.getOptimisticOneShotHerdImmunityDate());
+		assertEquals(daysAgo(0).plusDays(0), interpretation.getOneShotPopQuotaVaccinatedEstimation(POP_QUOTA_FAC));
 
 		// if a third of goal got vaccinated today, herd immunity will be reached in two days
 
 		int vaccinationGoalThird = (int) (1.0 / 3 * vaccinationGoal);
 		interpretation = getInterpretationFor(new VaccinationDataRowMockBuilder().with(DATE, daysAgo(0))
 				.with(SHOTS_TODAY_FIRST, vaccinationGoalThird).with(PERSONS_TOTAL_FIRST, vaccinationGoalThird).get());
-		assertEquals(daysAgo(0).plusDays(2), interpretation.getOptimisticOneShotHerdImmunityDate());
+		assertEquals(daysAgo(0).plusDays(2), interpretation.getOneShotPopQuotaVaccinatedEstimation(POP_QUOTA_FAC));
 
 	}
 	
-	@Test
-	public void getRealisticOneShotHerdImmunityWorks() {
-		
-		
-		int vaccinationGoal = (int) (VaccinationDataInterpretation.HERD_IMMUNITY_FACTOR_REALISTIC
-				* VaccinationDataInterpretation.GERMAN_POPULATION);
-
-		// if everybody got vaccinated today, herd immunity is reached today
-		interpretation = getInterpretationFor(new VaccinationDataRowMockBuilder().with(DATE, daysAgo(0))
-				.with(SHOTS_TODAY_FIRST, vaccinationGoal).with(PERSONS_TOTAL_FIRST, vaccinationGoal).get());
-
-		assertEquals(daysAgo(0).plusDays(0), interpretation.getRealisticOneShotHerdImmunityDate());
-
-		// if 1/100 of goal got vaccinated today, herd immunity will be reached in 99 days
-		int vaccinationGoalThird = (int) (1.0 / 100 * vaccinationGoal);
-		interpretation = getInterpretationFor(new VaccinationDataRowMockBuilder().with(DATE, daysAgo(0))
-				.with(SHOTS_TODAY_FIRST, vaccinationGoalThird).with(PERSONS_TOTAL_FIRST, vaccinationGoalThird).get());
-		assertEquals(daysAgo(0).plusDays(99), interpretation.getRealisticOneShotHerdImmunityDate());
-	}
 
 	@Test
 	public void oneShotHerdImmunityWorksOfGoalReached() {
 
-		int vaccinationGoal = (int) (VaccinationDataInterpretation.HERD_IMMUNITY_FACTOR_REALISTIC
-				* VaccinationDataInterpretation.GERMAN_POPULATION);
+		final double POP_QUOTA_FAC = 0.6;
+		
+		int vaccinationGoal = (int) (POP_QUOTA_FAC	* VaccinationDataInterpretation.GERMAN_POPULATION);
 
 		int halfVaccinationGoal = (int) (0.5 * vaccinationGoal) + 1;
 
@@ -339,7 +322,7 @@ public class VaccinationDataInterpretationTest {
 				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(1)).with(SHOTS_TODAY_FIRST, halfVaccinationGoal)
 						.with(PERSONS_TOTAL_FIRST, halfVaccinationGoal * 3).get());
 
-		assertEquals(daysAgo(2), interpretation.getOptimisticOneShotHerdImmunityDate());
+		assertEquals(daysAgo(2), interpretation.getOneShotPopQuotaVaccinatedEstimation(POP_QUOTA_FAC));
 	}
 
 	@Test
