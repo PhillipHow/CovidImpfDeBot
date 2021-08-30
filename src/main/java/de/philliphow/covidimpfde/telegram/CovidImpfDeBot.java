@@ -190,8 +190,9 @@ public class CovidImpfDeBot extends TelegramLongPollingCommandBot {
 				if (checkForNewVaccinationData() && lastVaccinationUpdateWasOnSunday())
 					sendVaccinationUpdateToAllSubs();
 				
-				if (checkForNewDeliveryData())
-					sendDeliveryUpdateToAllSubs();
+				// delivery updates disabled for now
+				// if (checkForNewDeliveryData()) 
+				//	sendDeliveryUpdateToAllSubs();
 
 			} catch (ImpfDashboardApiException exception) {
 				this.notifyAdminOnTelegram("Update could not be send, Impfdashboard is not reachable!");

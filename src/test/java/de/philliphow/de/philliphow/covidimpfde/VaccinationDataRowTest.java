@@ -20,7 +20,7 @@ public class VaccinationDataRowTest {
 	public void setUp() {
 		example = new VaccinationDataRow(
 				"2021-04-14	20049936	738501	662711	75790	14854474	1062422	4133040	14773908	5276028	0.178	0.063	7644926	5826686	1124640	1761928	4910112	4346229	944820	1001588	2734814	1480457	179820	760340",
-				"date	dosen_kumulativ	dosen_differenz_zum_vortag	dosen_erst_differenz_zum_vortag	dosen_zweit_differenz_zum_vortag	dosen_biontech_kumulativ	dosen_moderna_kumulativ	dosen_astrazeneca_kumulativ	personen_erst_kumulativ	personen_voll_kumulativ	impf_quote_erst	impf_quote_voll	indikation_alter_dosen	indikation_beruf_dosen	indikation_medizinisch_dosen	indikation_pflegeheim_dosen	indikation_alter_erst	indikation_beruf_erst	indikation_medizinisch_erst	indikation_pflegeheim_erst	indikation_alter_voll	indikation_beruf_voll	indikation_medizinisch_voll	indikation_pflegeheim_voll");
+				"date	dosen_kumulativ	dosen_differenz_zum_vortag	dosen_erst_differenz_zum_vortag	dosen_zweit_differenz_zum_vortag	dosen_biontech_kumulativ	dosen_moderna_kumulativ	dosen_astra_kumulativ	personen_erst_kumulativ	personen_voll_kumulativ	impf_quote_erst	impf_quote_voll	indikation_alter_dosen	indikation_beruf_dosen	indikation_medizinisch_dosen	indikation_pflegeheim_dosen	indikation_alter_erst	indikation_beruf_erst	indikation_medizinisch_erst	indikation_pflegeheim_erst	indikation_alter_voll	indikation_beruf_voll	indikation_medizinisch_voll	indikation_pflegeheim_voll");
 
 	}
 
@@ -75,6 +75,8 @@ public class VaccinationDataRowTest {
 		Vaccine astra = Vaccine.byDeliveryDataIdentifier("astra");
 		Vaccine moderna = Vaccine.byDeliveryDataIdentifier("moderna");
 
+		System.out.println(astra.getVaccinationsDataField().getFieldName());
+		
 		assertEquals(14854474, example.getTotalShotsByVaccine(biontech));
 		assertEquals(4133040, example.getTotalShotsByVaccine(astra));
 		assertEquals(1062422, example.getTotalShotsByVaccine(moderna));
@@ -88,7 +90,7 @@ public class VaccinationDataRowTest {
 
 			new VaccinationDataRow(
 					"20049936	738501	662711	75790	14854474	1062422	4133040	14773908	5276028	0.178	0.063	7644926	5826686	1124640	1761928	4910112	4346229	944820	1001588	2734814	1480457	179820	760340",
-					"date	dosen_kumulativ	dosen_differenz_zum_vortag	dosen_erst_differenz_zum_vortag	dosen_zweit_differenz_zum_vortag	dosen_biontech_kumulativ	dosen_moderna_kumulativ	dosen_astrazeneca_kumulativ	personen_erst_kumulativ	personen_voll_kumulativ	impf_quote_erst	impf_quote_voll	indikation_alter_dosen	indikation_beruf_dosen	indikation_medizinisch_dosen	indikation_pflegeheim_dosen	indikation_alter_erst	indikation_beruf_erst	indikation_medizinisch_erst	indikation_pflegeheim_erst	indikation_alter_voll	indikation_beruf_voll	indikation_medizinisch_voll	indikation_pflegeheim_voll");
+					"date	dosen_kumulativ	dosen_differenz_zum_vortag	dosen_erst_differenz_zum_vortag	dosen_zweit_differenz_zum_vortag	dosen_biontech_kumulativ	dosen_moderna_kumulativ	dosen_astra_kumulativ	personen_erst_kumulativ	personen_voll_kumulativ	impf_quote_erst	impf_quote_voll	indikation_alter_dosen	indikation_beruf_dosen	indikation_medizinisch_dosen	indikation_pflegeheim_dosen	indikation_alter_erst	indikation_beruf_erst	indikation_medizinisch_erst	indikation_pflegeheim_erst	indikation_alter_voll	indikation_beruf_voll	indikation_medizinisch_voll	indikation_pflegeheim_voll");
 
 		});
 
@@ -98,7 +100,7 @@ public class VaccinationDataRowTest {
 	public void newFieldDoesNotBreakConstruction() {
 		VaccinationDataRow exampleWithNewField = new VaccinationDataRow(
 				"2021-04-14	NEWFIELD	20049936	738501	662711	75790	14854474	1062422	4133040	14773908	5276028	0.178	0.063	7644926	5826686	1124640	1761928	4910112	4346229	944820	1001588	2734814	1480457	179820	760340",
-				"date	NEWFIELDVALUE	dosen_kumulativ	dosen_differenz_zum_vortag	dosen_erst_differenz_zum_vortag	dosen_zweit_differenz_zum_vortag	dosen_biontech_kumulativ	dosen_moderna_kumulativ	dosen_astrazeneca_kumulativ	personen_erst_kumulativ	personen_voll_kumulativ	impf_quote_erst	impf_quote_voll	indikation_alter_dosen	indikation_beruf_dosen	indikation_medizinisch_dosen	indikation_pflegeheim_dosen	indikation_alter_erst	indikation_beruf_erst	indikation_medizinisch_erst	indikation_pflegeheim_erst	indikation_alter_voll	indikation_beruf_voll	indikation_medizinisch_voll	indikation_pflegeheim_voll");
+				"date	NEWFIELDVALUE	dosen_kumulativ	dosen_differenz_zum_vortag	dosen_erst_differenz_zum_vortag	dosen_zweit_differenz_zum_vortag	dosen_biontech_kumulativ	dosen_moderna_kumulativ	dosen_astra_kumulativ	personen_erst_kumulativ	personen_voll_kumulativ	impf_quote_erst	impf_quote_voll	indikation_alter_dosen	indikation_beruf_dosen	indikation_medizinisch_dosen	indikation_pflegeheim_dosen	indikation_alter_erst	indikation_beruf_erst	indikation_medizinisch_erst	indikation_pflegeheim_erst	indikation_alter_voll	indikation_beruf_voll	indikation_medizinisch_voll	indikation_pflegeheim_voll");
 		assertEquals(example, exampleWithNewField);
 	}
 

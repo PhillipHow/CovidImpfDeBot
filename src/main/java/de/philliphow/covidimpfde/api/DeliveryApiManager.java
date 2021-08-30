@@ -76,9 +76,11 @@ public class DeliveryApiManager extends AbstractTsvApiWithCache<DeliveryDataRow>
 		/*
 		 * Vaccine data is provided by the API per local state, so the data needs to be
 		 * accumulated to get the federal deliveries.
+		 * Also filter negative deliveries
 		 */
 
 		Map<String, List<DeliveryDataRow>> localDeliveriesGroupedByFederalDelivery = super.getCurrentData().stream()
+				.filter(delivery -> delivery.getDoses() > 0)
 				.collect(Collectors.groupingBy(e -> e.getCalendarWeekMonday() + "/" + e.getVaccineIdentifier()));
 
 		List<DeliveryDataRow> federalDeliveries = new ArrayList<>();

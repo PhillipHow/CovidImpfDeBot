@@ -20,11 +20,23 @@ public class StrUtil {
 	/**
 	 * Formats numbers to be readable on first glance, for example 23,5K
 	 * 
-	 * @param num
+	 * @param num, positive or negative
 	 * @return the formatted number
 	 */
 	public static String number(int num) {
 
+		String shortNumberAbs = shortNumber(Math.abs(num));
+		String prefix = (num < 0) ? "-" : "";
+		
+		return prefix + shortNumberAbs; 
+	}
+	
+	/**
+	 * Takes a positive integer and formats it to be readable at first glance, fopr example 23,5K
+	 * @param num
+	 * @return
+	 */
+	private static String shortNumber(int num) {
 		if (num < 1000)
 			return formatWithDecimals(0).format(1.0 * num);
 

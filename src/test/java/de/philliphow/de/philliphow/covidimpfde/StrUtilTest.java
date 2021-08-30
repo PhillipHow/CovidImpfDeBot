@@ -29,6 +29,13 @@ public class StrUtilTest {
 		assertEquals("1,12M", StrUtil.number(1124000));
 		assertEquals("1,13M", StrUtil.number(1126000));
 	}
+	
+	@Test 
+	public void negativeNumbersFormattedCorrectly() {
+		assertEquals("-123", StrUtil.number(-123));
+		assertEquals("-1K", StrUtil.number(-1234));
+		assertEquals("-1,12M", StrUtil.number(-1120000));
+	}
 
 	@Test
 	public void positiveDifferenceHasPlus() {
