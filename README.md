@@ -2,6 +2,8 @@
 
 A [Telegram Bot](https://t.me/CovidImpfDEBot) with that informs about the current progress in the German COVID-19 vaccination campaign. Includes a (simple) daily estimation when herd immunity will be reached. Users can subscribe to get notified about vaccination and delivery updates. 
 
+![Screenshot of /impf command example result](https://github.com/PhillipHow/CovidImpfDeBot/blob/ce76f651b290ac2d5d4c1c685071a7ab6b807c18/command-example.png)
+
 Written in Java 8 with a strong focus on DRY and the SRP. Published under the MIT license. Vaccination data is fetched from the [Impfdashboard of the german Robert Koch institute](https://impfdashboard.de/).
 
 Thanks for 325 subscribed bot users! :)
