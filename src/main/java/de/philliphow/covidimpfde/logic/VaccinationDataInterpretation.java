@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.pmw.tinylog.Logger;
-
 import de.philliphow.covidimpfde.api.models.VaccinationDataRow;
 import de.philliphow.covidimpfde.api.models.Vaccine;
 import de.philliphow.covidimpfde.api.models.WeeklySummary;

@@ -78,7 +78,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	}
 	
 	private String getHeadline() {
-		String updateType = dataInterpreter.latestUpdateIsSunday() ? "Wöchentliches Impf-Update (jetzt mit Booster-Impfungen!)" : "Impf-Update";
+		String updateType = dataInterpreter.latestUpdateIsSunday() ? "Wöchentliches Impf-Update (jetzt mit Booster-Impfungen!)" : "Impf-Update (jetzt mit Booster-Impfungen!)";
 		
 		return String.format("*%s*\n-----------------------\n", updateType);
 	}
@@ -197,7 +197,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	private String getWeekSummary() {
 		List<VaccinationDataRow> lastWeek = dataInterpreter.getLastWeek();
 
-		StringBuilder sb = new StringBuilder("Zusammenfassung letzte Woche\n");
+		StringBuilder sb = new StringBuilder("*Zusammenfassung letzte Woche*\n");
 		lastWeek.forEach(weekDay -> {
 			String weekDayString = StrUtil.weekDayShort(weekDay.getDate());
 			String dosesWeekDay = StrUtil.number(weekDay.getShotsToday());
@@ -211,16 +211,17 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	}
 
 	private String getCalendarWeeksSummary() {
-
+ 
 		StringBuilder sb = new StringBuilder();
 		dataInterpreter.getLastNWeeklySummarys(CALENDAR_WEEK_SUMMARY_SHOW_WEEKS).forEach(weeklySummary -> {
 			String calendarWeek = StrUtil.calendarWeek(weeklySummary.getCalendarWeekNumber());
 			String calendarWeekDoses = StrUtil.number(weeklySummary.getTotalDoses());
+			String calendarWeekFirstDoses = StrUtil.number(weeklySummary.getTotalFirstDoses());
 
-			sb.append(String.format("%s - *%s*\n", calendarWeek, calendarWeekDoses));
+			sb.append(String.format("%s - *%s* (*%s*)\n", calendarWeek, calendarWeekDoses, calendarWeekFirstDoses));
 		});
 
-		return String.format("Wochenübersicht\n%s\n", sb.toString());
+		return String.format("*Wochenübersicht vergebene Dosen*\n_(in Klammern: nur Erst-Dosen)_\n%s\n", sb.toString());
 	}
 
 	private String getFooter() {
