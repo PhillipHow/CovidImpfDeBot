@@ -40,6 +40,7 @@ public class VaccinationCommand extends TelegramCommandWrapper {
 		int subCount = getSubCount();
 
 		UpdateMessageBuilder<VaccinationDataRow> updateBuilder = new VaccinationUpdateBuilder()
+				.setDebugDate(LocalDate.now().minusDays(5))
 				.setIsSubbed(chatIsSubbed)
 				.setChatId(chatId)
 				.setSubCount(subCount)

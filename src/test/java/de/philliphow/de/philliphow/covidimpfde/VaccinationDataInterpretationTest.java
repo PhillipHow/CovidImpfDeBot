@@ -3,11 +3,13 @@ package de.philliphow.de.philliphow.covidimpfde;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.DATE;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.PERSONS_TOTAL_FIRST;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.PERSONS_TOTAL_SECOND;
+import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.PERSONS_TOTAL_THIRD;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.POPULATION_QUOTA_FIRST_SHOT;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.POPULATION_QUOTA_SECOND_SHOT;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY_FIRST;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY_SECOND;
+import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TODAY_THIRD;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TOTAL;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TOTAL_ASTRA;
 import static de.philliphow.covidimpfde.api.models.VaccinationDataRow.VaccinationsDataField.SHOTS_TOTAL_BIONTECH;
@@ -131,6 +133,15 @@ public class VaccinationDataInterpretationTest {
 	}
 
 	@Test
+	public void getNewThirdDoesesIsCorrect() {
+		interpretation = getInterpretationFor(
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(2)).with(SHOTS_TODAY_THIRD, 300).get(),
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(1)).with(SHOTS_TODAY_THIRD, 200).get());
+		
+		assertEquals(200, interpretation.getLatestUpdateNewThirdShots());
+	}
+	
+	@Test
 	public void getTotalPersonsVaccinatedOnceIsCorrect() {
 
 		interpretation = getInterpretationFor(
@@ -150,6 +161,15 @@ public class VaccinationDataInterpretationTest {
 
 		assertEquals(500, interpretation.getTotalPersonsVaccintedTwice());
 
+	}
+	
+	@Test
+	public void getTotalPersonsVaccinatedThriceIsCorrect() {
+		interpretation = getInterpretationFor(
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(2)).with(PERSONS_TOTAL_THIRD, 200).get(),
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(1)).with(PERSONS_TOTAL_THIRD, 600).get());
+		
+		assertEquals(600, interpretation.getTotalPersonsVaccinatedThrice());
 	}
 
 	@Test
@@ -174,7 +194,19 @@ public class VaccinationDataInterpretationTest {
 						.get());
 
 		assertEquals(0.4, interpretation.getPopulationQuotaVaccinatedFull(), EPSILON);
-
+	}
+	
+	@Test
+	public void getPopulationQuotaVaccinatedThriceIsCorrect() {
+		
+		interpretation = getInterpretationFor(
+				new VaccinationDataRowMockBuilder().with(DATE, daysAgo(2))
+					.with(POPULATION_QUOTA_SECOND_SHOT, 1)
+					.with(PERSONS_TOTAL_SECOND, 1000)
+					.with(PERSONS_TOTAL_THIRD, 500)
+					.get());
+		
+		assertEquals(0.5, interpretation.getPopulationQuotaVaccinatedThrice(), EPSILON);
 	}
 
 	@Test
@@ -366,6 +398,7 @@ public class VaccinationDataInterpretationTest {
 		assertEquals(200 + 300, summaries.get(1).getTotalDoses());
 
 	}
+	
 
 	private LocalDate daysAgo(int n) {
 		return LocalDate.now().minusDays(n);

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import de.philliphow.covidimpfde.api.models.VaccinationDataRow;
 import de.philliphow.covidimpfde.api.models.Vaccine;
 import de.philliphow.covidimpfde.api.models.WeeklySummary;
@@ -70,6 +72,23 @@ public class VaccinationDataInterpretation {
 	public int getLatestUpdateNewSecondShots() {
 		return latestUpdate.getSecondShotsToday();
 	}
+	
+	/**
+	 * 
+	 * @return how many booster doses have been issued on the last day
+	 */
+	public int getLatestUpdateNewThirdShots() {
+		return latestUpdate.getThirdShotsToday();
+	}
+	
+	/**
+	 * 
+	 * @return how many third doeses ("booster shots") have been issued on the last day
+	 */
+	public int getLatestUpdateThirdShots() {
+		return latestUpdate.getThirdShotsToday();
+	}
+
 
 	/**
 	 * @return the difference between the shots issued on the last day and the day
@@ -104,6 +123,13 @@ public class VaccinationDataInterpretation {
 	public int getTotalPersonsVaccintedTwice() {
 		return latestUpdate.getPersonsVaccinatedFull();
 	}
+	
+	/**
+	 * @return total number of people that have recieved a "booster" shot
+	 */
+	public int getTotalPersonsVaccinatedThrice() {
+		return latestUpdate.getPersonsVaccinatedThrice();
+	}
 
 	/**
 	 * @return current quota of the population that has received at least one dose
@@ -119,6 +145,20 @@ public class VaccinationDataInterpretation {
 	 */
 	public double getPopulationQuotaVaccinatedFull() {
 		return latestUpdate.getPopulationQuotaVaccinatedFull();
+	}
+	
+	/**
+	 * @return current quota of the population that has been bostered
+	 */
+	public double getPopulationQuotaVaccinatedThrice() {
+		// Note: The API has does not yet provide this number, but it can be calculated using a simple rule-of-three calculation
+		
+		int peopleWithThirdDose = latestUpdate.getPersonsVaccinatedThrice();
+		int peopleWithSecondDose = latestUpdate.getPersonsVaccinatedFull();
+		double peopleWithSecondDosePercent = latestUpdate.getPopulationQuotaVaccinatedFull(); 
+	
+		double peopleWithThirdDosePercent = (double) peopleWithThirdDose / (double) peopleWithSecondDose * peopleWithSecondDosePercent;
+		return peopleWithThirdDosePercent;	
 	}
 
 	/**
@@ -280,6 +320,6 @@ public class VaccinationDataInterpretation {
 		return weeklySummarys.subList(0, Math.min(n, weeklySummarys.size()));
 
 	}
-
+	
 
 }

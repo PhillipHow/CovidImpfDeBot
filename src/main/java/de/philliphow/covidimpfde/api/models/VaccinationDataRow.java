@@ -25,16 +25,23 @@ public class VaccinationDataRow extends AbstractTsvRow {
 	 *
 	 */
 	public static enum VaccinationsDataField {
-		DATE("date"), SHOTS_TOTAL("dosen_kumulativ"), SHOTS_TOTAL_BIONTECH("dosen_biontech_kumulativ"),
-		SHOTS_TOTAL_MODERNA("dosen_moderna_kumulativ"), SHOTS_TOTAL_ASTRA("dosen_astra_kumulativ"),
+		DATE("date"), SHOTS_TOTAL("dosen_kumulativ"), 
+		SHOTS_TOTAL_BIONTECH("dosen_biontech_kumulativ"),
+		SHOTS_TOTAL_MODERNA("dosen_moderna_kumulativ"), 
+		SHOTS_TOTAL_ASTRA("dosen_astra_kumulativ"),
 		SHOTS_TOTAL_JOHNSON("dosen_johnson_kumulativ"),
 
-		SHOTS_TODAY("dosen_differenz_zum_vortag"), SHOTS_TODAY_FIRST("dosen_erst_differenz_zum_vortag"),
+		SHOTS_TODAY("dosen_differenz_zum_vortag"), 
+		SHOTS_TODAY_FIRST("dosen_erst_differenz_zum_vortag"),
 		SHOTS_TODAY_SECOND("dosen_zweit_differenz_zum_vortag"),
+		SHOTS_TODAY_THIRD("dosen_dritt_differenz_zum_vortag"),
 
-		PERSONS_TOTAL_FIRST("personen_erst_kumulativ"), PERSONS_TOTAL_SECOND("personen_voll_kumulativ"),
-
-		POPULATION_QUOTA_FIRST_SHOT("impf_quote_erst"), POPULATION_QUOTA_SECOND_SHOT("impf_quote_voll");
+		PERSONS_TOTAL_FIRST("personen_erst_kumulativ"), 
+		PERSONS_TOTAL_SECOND("personen_voll_kumulativ"),
+		PERSONS_TOTAL_THIRD("personen_auffrisch_kumulativ"),
+		
+		POPULATION_QUOTA_FIRST_SHOT("impf_quote_erst"), 
+		POPULATION_QUOTA_SECOND_SHOT("impf_quote_voll");
 
 		// INDICATION NOT USED CURRENTLY
 
@@ -106,6 +113,11 @@ public class VaccinationDataRow extends AbstractTsvRow {
 	public int getSecondShotsToday() {
 		return this.getIntField(VaccinationsDataField.SHOTS_TODAY_SECOND);
 	}
+	
+	
+	public int getThirdShotsToday() {
+		return this.getIntField(VaccinationsDataField.SHOTS_TODAY_THIRD);
+	}
 
 	public int getPersonsVaccinatedOnce() {
 		return this.getIntField(VaccinationsDataField.PERSONS_TOTAL_FIRST);
@@ -113,6 +125,10 @@ public class VaccinationDataRow extends AbstractTsvRow {
 
 	public int getPersonsVaccinatedFull() {
 		return this.getIntField(VaccinationsDataField.PERSONS_TOTAL_SECOND);
+	}
+	
+	public int getPersonsVaccinatedThrice() {
+		return this.getIntField(VaccinationsDataField.PERSONS_TOTAL_THIRD);
 	}
 
 	/**
@@ -156,5 +172,9 @@ public class VaccinationDataRow extends AbstractTsvRow {
 				.allMatch(fieldsAreEqual);
 
 	}
+
+
+
+	
 
 }

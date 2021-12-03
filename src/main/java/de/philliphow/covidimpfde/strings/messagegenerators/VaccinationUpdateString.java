@@ -78,7 +78,7 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 	}
 	
 	private String getHeadline() {
-		String updateType = dataInterpreter.latestUpdateIsSunday() ? "Wöchentliches Impf-Update" : "Impf-Update";
+		String updateType = dataInterpreter.latestUpdateIsSunday() ? "Wöchentliches Impf-Update (jetzt mit Booster-Impfungen!)" : "Impf-Update";
 		
 		return String.format("*%s*\n-----------------------\n", updateType);
 	}
@@ -88,10 +88,11 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 		String dateString = StrUtil.capitalized(StrUtil.date(dataInterpreter.getLatestUpdate().getDate()));
 		String updateShots = StrUtil.number(dataInterpreter.getLatestUpdateShotsToday());
 		String oneWeekAgoDiff = StrUtil.difference(dataInterpreter.getLatestUpdateDiffOneWeekAgo());
+		String boosterShots = StrUtil.number(dataInterpreter.getLatestUpdateThirdShots());
 
 		return String.format(
-				"*%s* wurden *%s Dosen* verteilt. Dies entspricht einer Veränderung von *%s* im Vergleich zu vor einer Woche, aber meistens erfolgen noch Nachmeldungen.\n\n",
-				dateString, updateShots, oneWeekAgoDiff);
+				"*%s* wurden *%s Dosen* verteilt. Dies entspricht einer Veränderung von *%s* im Vergleich zu vor einer Woche. *%s* davon sind Booster-Impfungen.\n\n",
+				dateString, updateShots, oneWeekAgoDiff, boosterShots);
 	}
 
 	private String getFirstSecondShotUpdate(boolean showDiff) {
@@ -99,19 +100,26 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 		String shotsTotal = StrUtil.number(dataInterpreter.getTotalShots());
 		String firstShotNumber = StrUtil.number(dataInterpreter.getTotalPersonsVaccinatedOnce());
 		String firstShotsDiff = StrUtil.difference(dataInterpreter.getLatestUpdateNewFirstShots());
+		String firstShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedOnce());
 		String secondShotsNumber = StrUtil.number(dataInterpreter.getTotalPersonsVaccintedTwice());
 		String secondShotsDiff = StrUtil.difference(dataInterpreter.getLatestUpdateNewSecondShots());
-		String firstShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedOnce());
 		String secondShotsPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedFull());
+		String thirdShotNumber = StrUtil.number(dataInterpreter.getTotalPersonsVaccinatedThrice());
+		String thirdShotDiff = StrUtil.difference(dataInterpreter.getLatestUpdateNewThirdShots());
+		String thirdShotPercent = StrUtil.percent(dataInterpreter.getPopulationQuotaVaccinatedThrice());
 		
 		if (showDiff)
-			return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*), *%s*\n2/2 Dosen: *%s* (*%s*), *%s*\n\n",
+			return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*), *%s*\n2/2 Dosen: *%s* (*%s*), *%s*\n3/2 Dosen: *%s* (*%s*), *%s*\n\n",
 					shotsTotal,
-					firstShotNumber, firstShotsPercent, firstShotsDiff, secondShotsNumber, secondShotsPercent, secondShotsDiff);
+					firstShotNumber, firstShotsPercent, firstShotsDiff, 
+					secondShotsNumber, secondShotsPercent, secondShotsDiff, 
+					thirdShotNumber, thirdShotPercent, thirdShotDiff);
 		else
-			return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*)\n2/2 Dosen: *%s* (*%s*)\n\n",
+			return String.format("Dosen insgesamt: *%s*\n1/2 Dosen: *%s* (*%s*)\n2/2 Dosen: *%s* (*%s*)\n3/2 Dosen: *%s* (*%s*)\n\n",
 					shotsTotal,
-					firstShotNumber, firstShotsPercent, secondShotsNumber, secondShotsPercent);
+					firstShotNumber, firstShotsPercent, 
+					secondShotsNumber, secondShotsPercent, 
+					thirdShotNumber, thirdShotPercent);
 	
 	}
 
@@ -161,7 +169,9 @@ public class VaccinationUpdateString implements MessageStringGenerator {
 			sb.append(getMilestoneEstimationForFirstShotQuota(firstShotQuota));
 		}
 		
-		sb.append("_(beruht auf Impfgeschwindigkeit der letzten zwei Wochen)_\n");
+		String movingTwoWeeksAverageFirst = StrUtil.number((int) dataInterpreter.getMovingFirstShotAverage());
+		
+		sb.append("_(beruht auf Erstimpfgeschwindigkeit der letzten zwei Wochen: durschnittlich " + movingTwoWeeksAverageFirst + " erstmalig geimpfte Menschen pro Tag)_\n");
 		
 		return sb.toString();
 	}
