@@ -380,13 +380,13 @@ public class VaccinationDataInterpretationTest {
 	public void getLastNWeeklySummariesIsCorrect() {
 
 		interpretation = getInterpretationFor(
-				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 4)).with(SHOTS_TODAY, 100).get(), // shouldnt
+				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 4)).with(SHOTS_TODAY, 100).with(SHOTS_TODAY_FIRST, 50).get(), // shouldnt
 																														// be
 																														// in
 																														// it
-				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 11)).with(SHOTS_TODAY, 200).get(),
-				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 12)).with(SHOTS_TODAY, 300).get(),
-				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 19)).with(SHOTS_TODAY, 400).get());
+				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 11)).with(SHOTS_TODAY, 200).with(SHOTS_TODAY_FIRST, 100).get(),
+				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 12)).with(SHOTS_TODAY, 300).with(SHOTS_TODAY_FIRST, 150).get(),
+				new VaccinationDataRowMockBuilder().with(DATE, LocalDate.of(2021, 1, 19)).with(SHOTS_TODAY, 400).with(SHOTS_TODAY_FIRST, 200).get());
 
 		List<WeeklySummary> summaries = interpretation.getLastNWeeklySummarys(2);
 
@@ -394,8 +394,10 @@ public class VaccinationDataInterpretationTest {
 
 		assertEquals(LocalDate.of(2021, 1, 18), summaries.get(0).getWeekdayMonday());
 		assertEquals(400, summaries.get(0).getTotalDoses());
+		assertEquals(200, summaries.get(0).getTotalFirstDoses());
 		assertEquals(LocalDate.of(2021, 1, 11), summaries.get(1).getWeekdayMonday());
 		assertEquals(200 + 300, summaries.get(1).getTotalDoses());
+		assertEquals(100 + 150, summaries.get(1).getTotalFirstDoses());
 
 	}
 	
