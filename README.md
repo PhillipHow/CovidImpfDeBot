@@ -1,3 +1,5 @@
+_Update 12/03/2023:_ As the COVID-19 pandemic is mostly over, this bot has been sun-downed. Thanks for your support!
+
 # CovidImpfDeBot
 
 A [Telegram Bot](https://t.me/CovidImpfDEBot) with that informs about the current progress in the German COVID-19 vaccination campaign. Includes a (simple) daily estimation when herd immunity will be reached. Users can subscribe to get notified about vaccination and delivery updates. 
